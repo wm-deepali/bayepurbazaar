@@ -1,0 +1,212 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Listing;
+use App\Models\Location;
+use App\Models\Category;
+use App\Models\SubCategory;
+
+class ListingController extends Controller
+{
+
+    public function index()
+    {
+        $listings = Listing::with([
+            'location',
+            'category',
+            'subcategory'
+        ])->latest()->get();
+
+        return view('admin.listings.index',compact('listings'));
+    }
+
+
+    public function create()
+    {
+        $locations = Location::get();
+
+        $categories = Category::where('status',1)->get();
+
+        return view('admin.listings.create',compact(
+            'locations',
+            'categories'
+        ));
+    }
+
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+
+            'location_id' => 'required',
+
+            'category_id' => 'required',
+
+            'business_name' => 'required',
+
+            'mobile' => 'required'
+
+        ]);
+
+
+        Listing::create([
+
+            'location_id' => $request->location_id,
+
+            'category_id' => $request->category_id,
+
+            'sub_category_id' => $request->sub_category_id,
+
+            'business_name' => $request->business_name,
+
+            'address' => $request->address,
+
+            'mobile' => $request->mobile,
+
+            'email' => $request->email,
+
+            'whatsapp' => $request->whatsapp,
+
+            'short_description' => $request->short_description,
+
+            'services' => $request->services,
+
+            'working_hours' => $request->working_hours,
+
+            'closed_days' => $request->closed_days,
+
+            'website' => $request->website,
+
+            'status' => $request->status ? 1 : 0
+
+        ]);
+
+
+        return redirect()->route('admin.listings.index')
+            ->with('success','Listing Created Successfully');
+
+    }
+
+
+    public function edit($id)
+    {
+
+        $listing = Listing::findOrFail($id);
+
+        $locations = Location::get();
+
+        $categories = Category::where('status',1)->get();
+
+        $subcategories = SubCategory::where(
+            'category_id',
+            $listing->category_id
+        )->get();
+
+        return view('admin.listings.edit',compact(
+
+            'listing',
+            'locations',
+            'categories',
+            'subcategories'
+
+        ));
+
+    }
+
+
+    public function update(Request $request,$id)
+    {
+
+        $listing = Listing::findOrFail($id);
+
+        $request->validate([
+
+            'location_id' => 'required',
+
+            'category_id' => 'required',
+
+            'business_name' => 'required',
+
+            'mobile' => 'required'
+
+        ]);
+
+
+        $listing->update([
+
+            'location_id' => $request->location_id,
+
+            'category_id' => $request->category_id,
+
+            'sub_category_id' => $request->sub_category_id,
+
+            'business_name' => $request->business_name,
+
+            'address' => $request->address,
+
+            'mobile' => $request->mobile,
+
+            'email' => $request->email,
+
+            'whatsapp' => $request->whatsapp,
+
+            'short_description' => $request->short_description,
+
+            'services' => $request->services,
+
+            'working_hours' => $request->working_hours,
+
+            'closed_days' => $request->closed_days,
+
+            'website' => $request->website,
+
+            'status' => $request->status ? 1 : 0
+
+        ]);
+
+
+        return redirect()->route('admin.listings.index')
+            ->with('success','Listing Updated Successfully');
+
+    }
+
+
+    public function destroy($id)
+    {
+
+        Listing::findOrFail($id)->delete();
+
+        return response()->json([
+            'message'=>'Listing Deleted Successfully'
+        ]);
+
+    }
+
+
+    // AJAX Sub Categories
+
+    public function getSubCategories($category_id)
+    {
+
+        $subcategories = SubCategory::where(
+            'category_id',
+            $category_id
+        )->get();
+
+        $html = '<option value="">Select Sub Category</option>';
+
+        foreach($subcategories as $sub){
+
+            $html .= '<option value="'.$sub->id.'">'.$sub->name.'</option>';
+
+        }
+
+        return $html;
+
+    }
+
+}

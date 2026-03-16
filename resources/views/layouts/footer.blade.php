@@ -1,4 +1,4 @@
-   <!-- FOOTER -->
+<!-- FOOTER -->
 <footer class="bg-[#0f172a] text-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-8">
 
@@ -17,42 +17,58 @@
             </div>
 
             <!-- Categories -->
+            @php
+                use App\Models\Category;
+
+                $categories = Category::where('status', 1)
+                    ->where('show_footer', 1)
+                    ->orderBy('name')
+                    ->get();
+            @endphp
             <div>
                 <h5 class="font-semibold mb-5 text-teal-400 text-base">श्रेणियाँ</h5>
                 <ul class="space-y-3 text-sm text-gray-300">
-                    <li><a href="#" class="hover:text-teal-300 transition">किराना</a></li>
-                    <li><a href="#" class="hover:text-teal-300 transition">स्वास्थ्य</a></li>
-                    <li><a href="#" class="hover:text-teal-300 transition">कृषि</a></li>
-                    <li><a href="#" class="hover:text-teal-300 transition">शिक्षा</a></li>
+                    @foreach($categories as $category)
+                        <a href="#" onclick="filterCategory(this)" class="category-link"
+                            data-category="{{ $category->slug }}">
+
+                            {{ $category->name }}
+
+                        </a>
+                        <li><a href="#" class="hover:text-teal-300 transition">किराना</a></li>
+                        <li><a href="#" class="hover:text-teal-300 transition">स्वास्थ्य</a></li>
+                        <li><a href="#" class="hover:text-teal-300 transition">कृषि</a></li>
+                        <li><a href="#" class="hover:text-teal-300 transition">शिक्षा</a></li>
+                    @endforeach
                 </ul>
             </div>
 
             <!-- Company -->
             <!-- Company -->
-<div>
-    <h5 class="font-semibold mb-5 text-teal-400 text-base">कंपनी</h5>
-    <ul class="space-y-3 text-sm text-gray-300">
-        <li><a href="#" class="hover:text-teal-300 transition">हमारे बारे में</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">बायेपुर बाज़ार क्यों</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">सदस्य पंजीकरण</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">संपर्क करें</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">ब्लॉग्स</a></li>
-    </ul>
-</div>
+            <div>
+                <h5 class="font-semibold mb-5 text-teal-400 text-base">कंपनी</h5>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-teal-300 transition">हमारे बारे में</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">बायेपुर बाज़ार क्यों</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">सदस्य पंजीकरण</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">संपर्क करें</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">ब्लॉग्स</a></li>
+                </ul>
+            </div>
 
-<!-- Terms & Policies -->
-<div>
-    <h5 class="font-semibold mb-5 text-teal-400 text-base">नियम एवं नीतियाँ</h5>
-    <ul class="space-y-3 text-sm text-gray-300">
-        <li><a href="#" class="hover:text-teal-300 transition">नियम एवं शर्तें</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">गोपनीयता नीति</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">अस्वीकरण</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">सहायता एवं समर्थन</a></li>
-        <li><a href="#" class="hover:text-teal-300 transition">सामान्य प्रश्न (FAQ)</a></li>
-    </ul>
-</div>
+            <!-- Terms & Policies -->
+            <div>
+                <h5 class="font-semibold mb-5 text-teal-400 text-base">नियम एवं नीतियाँ</h5>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-teal-300 transition">नियम एवं शर्तें</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">गोपनीयता नीति</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">अस्वीकरण</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">सहायता एवं समर्थन</a></li>
+                    <li><a href="#" class="hover:text-teal-300 transition">सामान्य प्रश्न (FAQ)</a></li>
+                </ul>
+            </div>
 
-            
+
 
         </div>
 

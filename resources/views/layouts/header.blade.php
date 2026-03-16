@@ -22,16 +22,29 @@
             <div class="flex items-center gap-4">
 
                 <div class="relative w-80">
-                    <input type="text"
-                           placeholder="दुकान, सेवा या उत्पाद खोजें..."
-                           class="w-full border border-gray-300 rounded-xl py-3 px-5 pl-12">
+                    <input type="text" placeholder="दुकान, सेवा या उत्पाद खोजें..."
+                        class="w-full border border-gray-300 rounded-xl py-3 px-5 pl-12">
 
                     <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
 
+
+                @php
+                    use App\Models\Location;
+
+                    $locations = Location::orderBy('location')->get();
+                @endphp
+
                 <select class="border border-gray-300 rounded-xl px-4 py-3">
-                    <option>बायेपुर</option>
-                    <option>घाज़ीपुर</option>
+
+                    @foreach($locations as $location)
+
+                        <option value="{{ $location->id }}" {{ $location->is_default ? 'selected' : '' }}>
+                            {{ $location->location }}
+                        </option>
+
+                    @endforeach
+
                 </select>
 
                 <button class="bg-teal-600 text-white px-6 py-3 rounded-xl flex items-center gap-2">
@@ -45,18 +58,38 @@
 
     </div>
     <!-- CATEGORIES NAV -->
-        <nav class="bg-teal-50 border-t">
-            <div class="max-w-7xl mx-auto px-4 py-3 overflow-x-auto">
-                <div class="flex gap-8 whitespace-nowrap text-sm font-medium">
-                    <a href="#" onclick="filterCategory(this)" class="category-link active text-teal-700 hover:text-teal-800">सभी श्रेणियाँ</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">किराना स्टोर</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">स्वास्थ्य सेवाएँ</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">कृषि उत्पाद</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">शिक्षा</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">कपड़े &amp; फैशन</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">परिवहन</a>
-                    <a href="#" onclick="filterCategory(this)" class="category-link">इलेक्ट्रॉनिक्स</a>
-                </div>
+
+    @php
+        use App\Models\Category;
+
+        $categories = Category::where('status', 1)
+            ->where('show_header', 1)
+            ->orderBy('name')
+            ->get();
+    @endphp
+
+    <nav class="bg-teal-50 border-t">
+        <div class="max-w-7xl mx-auto px-4 py-3 overflow-x-auto">
+
+            <div class="flex gap-8 whitespace-nowrap text-sm font-medium">
+
+                <a href="#" onclick="filterCategory(this)"
+                    class="category-link active text-teal-700 hover:text-teal-800">
+                    सभी श्रेणियाँ
+                </a>
+
+                @foreach($categories as $category)
+
+                    <a href="#" onclick="filterCategory(this)" class="category-link" data-category="{{ $category->slug }}">
+
+                        {{ $category->name }}
+
+                    </a>
+
+                @endforeach
+
             </div>
-        </nav>
+
+        </div>
+    </nav>
 </header>

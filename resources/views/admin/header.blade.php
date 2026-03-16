@@ -29,63 +29,98 @@
     <!-- success message close -->
 </div>
 <div id='cssmenu'>
-    <ul class="pt-0">
-        <li><a href="#"> <i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+<ul class="pt-0">
 
-        <li>
-            <a href='#'>
-                <i class="fa-solid fa-gear"></i> Content Management
-            </a>
-            <ul>
-                <li><a href="{{ route('admin.banner.edit') }}">Manager Banner Content</a></li>
-                <li><a href="{{ route('admin.features.index') }}">Manage Features</a></li>
-                <li><a href="{{ route('admin.counters.index') }}">Manage Counters</a></li>
-                <li><a href="{{ route('admin.intro.index') }}">Manage Introduction</a></li>
-                <li><a href="{{ route('admin.highlight.index') }}">Manage Highlight</a></li>
-                <li><a href="{{ route('admin.manage-team.index') }}">Manage Our Team</a></li>
-                <li><a href="{{ route('admin.appointment.index') }}">Manage Appointment Section</a></li>
-                <li><a href="{{ route('admin.query.index') }}">Manage Query Section</a></li>
-                <li><a href="{{ route('admin.page-headers.index') }}">Manage Page Headings</a></li>
-            </ul>
-        </li>
-
-        <li><a href='#'> <i class="fa-solid fa-file-lines"></i> About & Contact</a>
-            <ul>
-                <li><a href="{{ route('admin.about.index') }}">Manage About Us</a></li>
-                <li><a href="{{ route('admin.contact.setting') }}">Manage Contact Us</a></li>
-                <li><a href="#">Manage TBC Gym</a></li>
-            </ul>
-        </li>
-
-        <li><a href='#'> <i class="fa-solid fa-hospital-user"></i> Disease & Treatments</a>
-            <ul>
-                <li><a href="{{ route('admin.manage-disease.index') }}">Manage Diseases & Treatments</a></li>
-            </ul>
-        </li>
-
-        <li><a href='#'> <i class="fa-solid fa-mail-bulk"></i> Inquiries</a>
-            <ul>
-               <li>
-    <a href="{{ route('admin.appointment-inquires.index') }}">Appointment Inquiries</a>
+<!-- Dashboard -->
+<li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+    <a href="{{ route('admin.dashboard') }}">
+        <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
 </li>
 
-                <li><a href="{{ route('admin.contact.inquiries') }}">Contact Us Inquiries</a></li>
-            </ul>
+
+<!-- Master -->
+<li class="{{ request()->routeIs('admin.locations.*','admin.categories.*','admin.subcategories.*','admin.mandals.*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa-solid fa-database"></i> Master
+    </a>
+
+    <ul>
+
+        <li class="{{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.locations.index') }}">
+                Manage Location
+            </a>
         </li>
 
-        <li><a href='#'> <i class="fa-brands fa-blogger"></i> FAQ & Blogs</a>
-            <ul>
-                <li><a href="{{ route('admin.manage-faq.index') }}">Manage FAQ</a></li>
-                <li><a href="{{ route('admin.manage-blog.index') }}">Manage Blogs</a></li>
-            </ul>
+        <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.categories.index') }}">
+                Manage Categories
+            </a>
         </li>
-        <li><a href='#'> <i class="fa-solid fa-comment-dots"></i> Feedback & Testimonials</a>
-            <ul>
-                <li><a href="#">Manage Feedback</a></li>
-                <li><a href="{{ route('admin.manage-testimonials.index') }}">Manage Testimonials</a></li>
-            </ul>
+
+        <li class="{{ request()->routeIs('admin.subcategories.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.subcategories.index') }}">
+                Manage Sub Categories
+            </a>
+        </li>
+
+        <li class="{{ request()->routeIs('admin.mandals.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.mandals.index') }}">
+                Manage Mandals
+            </a>
         </li>
 
     </ul>
-</div>
+</li>
 
+
+<!-- Listing & Members -->
+<li class="{{ request()->routeIs('admin.listings.*','admin.mandal-members.*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa-solid fa-list"></i> Listing & Members
+    </a>
+
+    <ul>
+
+        <li class="{{ request()->routeIs('admin.listings.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.listings.index') }}">
+                Manage Listing
+            </a>
+        </li>
+
+        <li class="{{ request()->routeIs('admin.mandal-members.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.mandal-members.index') }}">
+                Manage Mandal Members
+            </a>
+        </li>
+
+    </ul>
+</li>
+
+
+<!-- FAQ & Blogs -->
+<li class="{{ request()->routeIs('admin.faqs.*','admin.blogs.*') ? 'active' : '' }}">
+    <a href="#">
+        <i class="fa-solid fa-blog"></i> FAQ & Blogs
+    </a>
+
+    <ul>
+
+        <li class="{{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.faqs.index') }}">
+                Manage FAQ
+            </a>
+        </li>
+
+        <li class="{{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.blogs.index') }}">
+                Manage Blogs
+            </a>
+        </li>
+
+    </ul>
+</li>
+
+</ul>
+</div>

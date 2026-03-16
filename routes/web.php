@@ -1,41 +1,76 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ListingController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\LogoutController;
+use App\Http\Controllers\Admin\MandalController;
+use App\Http\Controllers\Admin\MandalMemberController;
+use App\Http\Controllers\Admin\ProfileSettingController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/', function () {
-    return view('pages.home');
-});
-Route::get('/about-us', function () {
-    return view('pages.about-us');
-});
-Route::get('/contact-us', function () {
-    return view('pages.contact-us');
-});
-Route::get('/disclaimer', function () {
-    return view('pages.disclaimer');
-});
-Route::get('/faq', function () {
-    return view('pages.faq');
-});
-Route::get('/listing', function () {
-    return view('pages.listing');
-});
-Route::get('/privacy-policy', function () {
-    return view('pages.privacy-policy');
-});
-Route::get('/terms-and-conditions', function () {
-    return view('pages.terms-and-conditions');
-});
-Route::get('/disclaimer', function () {
-    return view('pages.disclaimer');
-});
-Route::get('/mandal-members', function () {
-    return view('pages.mandal-members');
-});
-Route::get('/member-enquiry', function () {
-    return view('pages.member-enquiry');
-});
-Route::get('/why-us', function () {
-    return view('pages.why-us');
+
+use App\Http\Controllers\FrontController;
+
+Route::controller(FrontController::class)->group(function () {
+
+    Route::get('/', 'home')->name('home');
+
+    Route::get('/about-us', 'about')->name('about');
+
+    Route::get('/contact-us', 'contact')->name('contact');
+
+    Route::get('/disclaimer', 'disclaimer')->name('disclaimer');
+
+    Route::get('/faq', 'faq')->name('faq');
+
+    Route::get('/listing', 'listing')->name('listing');
+
+    Route::get('/privacy-policy', 'privacy')->name('privacy');
+
+    Route::get('/terms-and-conditions', 'terms')->name('terms');
+
+    Route::get('/mandal-members', 'mandalMembers')->name('mandal.members');
+
+    Route::get('/member-enquiry', 'memberEnquiry')->name('member.enquiry');
+
+    Route::get('/why-us', 'whyUs')->name('why.us');
+
 });
 
+// Admin Routes list
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('auth')->group(function () {
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('/profile-setting', ProfileSettingController::class);
+        Route::post('/resetpassword', [ProfileSettingController::class, 'resetPassword'])->name('reset.password');
+
+        Route::resource('locations', LocationController::class);
+
+        Route::resource('categories', CategoryController::class);
+        Route::resource('subcategories', SubCategoryController::class)->names('subcategories');
+
+        Route::resource('mandals', MandalController::class)->names('mandals');
+
+        Route::resource('listings', ListingController::class);
+        Route::get('get-subcategories/{category_id}', [ListingController::class, 'getSubCategories'])->name('get.subcategories');
+
+        Route::resource('mandal-members', MandalMemberController::class)->names('mandal-members');
+
+        Route::resource('faqs', FaqController::class)->names('faqs');
+
+        Route::resource('blogs', BlogController::class)->names('blogs');
+
+        Route::get('/logout', [LogoutController::class, 'logout']);
+
+    });
+});
