@@ -70,7 +70,7 @@
 
                                         <td>
                                             @if($blog->image)
-                                                <img src="{{ asset('uploads/blogs/' . $blog->image) }}" width="70">
+                                                <img src="{{ asset('storage/' . $blog->image) }}" width="70">
                                             @endif
                                         </td>
 

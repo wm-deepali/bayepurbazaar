@@ -6,13 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class MandalMember extends Model
 {
+
     protected $fillable = [
         'mandal_id',
+        'photo',
         'name',
         'designation',
+        'location',
+        'since',
         'mobile',
         'whatsapp',
         'email',
+        'relation',
+        'contribution',
+        'message',
         'status'
     ];
 

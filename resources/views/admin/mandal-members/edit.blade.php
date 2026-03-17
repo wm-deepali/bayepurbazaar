@@ -28,7 +28,6 @@ Edit Member
 
 </div>
 
-
 <div class="content-wrapper pb-4">
 
 <div class="card shadow-sm">
@@ -41,7 +40,8 @@ Edit Member
 
 <form id="memberForm"
 method="POST"
-action="{{ route('admin.mandal-members.update',$member->id) }}">
+action="{{ route('admin.mandal-members.update',$member->id) }}"
+enctype="multipart/form-data">
 
 @csrf
 @method('PUT')
@@ -71,6 +71,22 @@ action="{{ route('admin.mandal-members.update',$member->id) }}">
 
 <div class="form-group mt-3">
 
+<label>Member Photo</label>
+
+@if($member->photo)
+<div class="mb-2">
+<img src="{{ asset('storage/'.$member->photo) }}"
+style="width:70px;height:70px;border-radius:50%;object-fit:cover;">
+</div>
+@endif
+
+<input type="file" name="photo" class="form-control">
+
+</div>
+
+
+<div class="form-group mt-3">
+
 <label>Member Name *</label>
 
 <input
@@ -92,6 +108,33 @@ type="text"
 name="designation"
 class="form-control"
 value="{{ $member->designation }}">
+
+</div>
+
+
+<div class="form-group mt-3">
+
+<label>Location</label>
+
+<input
+type="text"
+name="location"
+class="form-control"
+value="{{ $member->location }}">
+
+</div>
+
+
+<div class="form-group mt-3">
+
+<label>Member Since</label>
+
+<input
+type="text"
+name="since"
+class="form-control"
+value="{{ $member->since }}"
+placeholder="e.g. Jan 2023">
 
 </div>
 
@@ -135,7 +178,103 @@ value="{{ $member->email }}">
 
 </div>
 
+<div class="form-group mt-3">
 
+<label>Relation With Bayepur</label>
+
+<select name="relation" class="form-control">
+
+<option value="">Select</option>
+
+<option value="native" {{ $member->relation == 'native' ? 'selected':'' }}>
+मैं बायेपुर का मूल निवासी हूँ
+</option>
+
+<option value="resident" {{ $member->relation == 'resident' ? 'selected':'' }}>
+मैं अभी बायेपुर में रहता हूँ
+</option>
+
+<option value="nri" {{ $member->relation == 'nri' ? 'selected':'' }}>
+मैं बाहर रहता हूँ
+</option>
+
+<option value="wellwisher" {{ $member->relation == 'wellwisher' ? 'selected':'' }}>
+मैं शुभचिंतक हूँ
+</option>
+
+</select>
+
+</div>
+
+@php
+$contributions = $member->contribution ? explode(',', $member->contribution) : [];
+@endphp
+
+<div class="form-group mt-3">
+
+<label>Contribution</label>
+
+<div class="row">
+
+<div class="col-md-6 mb-2">
+<label class="d-flex align-items-center gap-2 border rounded p-2">
+<input type="checkbox" name="contribution[]" value="mandal"
+{{ in_array('mandal',$contributions) ? 'checked':'' }}>
+<span>मंडल में शामिल होना</span>
+</label>
+</div>
+
+<div class="col-md-6 mb-2">
+<label class="d-flex align-items-center gap-2 border rounded p-2">
+<input type="checkbox" name="contribution[]" value="digital_help"
+{{ in_array('digital_help',$contributions) ? 'checked':'' }}>
+<span>दुकानदारों की डिजिटल मदद</span>
+</label>
+</div>
+
+<div class="col-md-6 mb-2">
+<label class="d-flex align-items-center gap-2 border rounded p-2">
+<input type="checkbox" name="contribution[]" value="problem_solving"
+{{ in_array('problem_solving',$contributions) ? 'checked':'' }}>
+<span>गाँव की समस्याओं का समाधान</span>
+</label>
+</div>
+
+<div class="col-md-6 mb-2">
+<label class="d-flex align-items-center gap-2 border rounded p-2">
+<input type="checkbox" name="contribution[]" value="volunteer"
+{{ in_array('volunteer',$contributions) ? 'checked':'' }}>
+<span>वॉलंटियर / सोशल वर्क</span>
+</label>
+</div>
+
+<div class="col-md-12">
+<label class="d-flex align-items-center gap-2 border rounded p-2">
+<input type="checkbox" name="contribution[]" value="other"
+{{ in_array('other',$contributions) ? 'checked':'' }}>
+<span>अन्य तरीके से योगदान</span>
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="form-group mt-3">
+
+<label>Member Message</label>
+
+<textarea
+name="message"
+class="form-control"
+rows="4"
+placeholder="Member interest / message">
+
+{{ $member->message }}
+
+</textarea>
+
+</div>
 <div class="form-group mt-3">
 
 <div class="custom-control custom-checkbox">

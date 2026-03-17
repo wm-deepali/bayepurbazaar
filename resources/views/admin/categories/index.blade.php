@@ -77,7 +77,7 @@
 
                                             @if($category->image)
 
-                                                <img src="{{ asset('uploads/categories/' . $category->image) }}" width="40"
+                                                <img src="{{ asset('storage/' . $category->image) }}" width="40"
                                                     height="40" class="rounded">
 
                                             @else

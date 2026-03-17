@@ -105,10 +105,10 @@
                 चाहे आप व्यापारी हों, ग्राहक हों या सिर्फ बायेपुर से प्यार करते हों – हम सब मिलकर इसे और बेहतर बना सकते हैं।
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="contact.html" class="bg-teal-600 hover:bg-teal-700 text-white px-10 py-5 rounded-2xl font-bold text-lg transition shadow-lg">
+                <a href="{{ route('contact') }}" class="bg-teal-600 hover:bg-teal-700 text-white px-10 py-5 rounded-2xl font-bold text-lg transition shadow-lg">
                     हमसे जुड़ें
                 </a>
-                <a href="mandal.html" class="bg-orange-600 hover:bg-orange-700 text-white px-10 py-5 rounded-2xl font-bold text-lg transition shadow-lg">
+                <a href="{{ route('mandal.members') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-10 py-5 rounded-2xl font-bold text-lg transition shadow-lg">
                     मंडल सदस्य देखें
                 </a>
             </div>

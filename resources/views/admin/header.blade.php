@@ -122,5 +122,17 @@
     </ul>
 </li>
 
+<li class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.contacts.index') }}">
+        <i class="fa-solid fa-envelope"></i> Contact Enquiries
+    </a>
+</li>
+
+<li class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+    <a href="{{ route('admin.settings.edit') }}">
+        <i class="fa-solid fa-gear"></i> Site Settings
+    </a>
+</li>
+
 </ul>
 </div>

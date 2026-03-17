@@ -45,6 +45,8 @@
 
                                     <th width="60">ID</th>
 
+                                    <th width="80">Image</th>
+
                                     <th>Business</th>
 
                                     <th>Location</th>
@@ -64,47 +66,53 @@
 
                                 @forelse($listings as $listing)
 
-                                    <tr id="row{{ $listing->id }}">
+                                                            <tr id="row{{ $listing->id }}">
 
-                                        <td>{{ $listing->id }}</td>
+                                                                <td>{{ $listing->id }}</td>
 
-                                        <td>
-                                            <strong>{{ $listing->business_name }}</strong>
-                                        </td>
+                                                                <td>
+                                                                    <img src="{{ $listing->image
+                                    ? asset('storage/' . $listing->image)
+                                    : asset('images/no-image.png') }}" width="50" height="50" style="object-fit:cover;border-radius:6px;">
+                                                                </td>
 
-                                        <td>{{ $listing->location->location ?? '-' }}</td>
+                                                                <td>
+                                                                    <strong>{{ $listing->business_name }}</strong>
+                                                                </td>
 
-                                        <td>{{ $listing->category->name ?? '-' }}</td>
+                                                                <td>{{ $listing->location->location ?? '-' }}</td>
 
-                                        <td>{{ $listing->mobile }}</td>
+                                                                <td>{{ $listing->category->name ?? '-' }}</td>
 
-                                        <td>
-                                            @if($listing->status)
-                                                <span class="badge badge-primary">Active</span>
-                                            @else
-                                                <span class="badge badge-danger">Inactive</span>
-                                            @endif
-                                        </td>
+                                                                <td>{{ $listing->mobile }}</td>
 
-                                        <td>
+                                                                <td>
+                                                                    @if($listing->status)
+                                                                        <span class="badge badge-primary">Active</span>
+                                                                    @else
+                                                                        <span class="badge badge-danger">Inactive</span>
+                                                                    @endif
+                                                                </td>
 
-                                            <a href="{{ route('admin.listings.edit', $listing->id) }}"
-                                                class="btn btn-sm btn-outline-dark">
+                                                                <td>
 
-                                                <i class="fa fa-pencil"></i>
+                                                                    <a href="{{ route('admin.listings.edit', $listing->id) }}"
+                                                                        class="btn btn-sm btn-outline-dark">
 
-                                            </a>
+                                                                        <i class="fa fa-pencil"></i>
 
-                                            <button class="btn btn-sm btn-outline-danger"
-                                                onclick="deleteListing({{ $listing->id }})">
+                                                                    </a>
 
-                                                <i class="fa fa-trash"></i>
+                                                                    <button class="btn btn-sm btn-outline-danger"
+                                                                        onclick="deleteListing({{ $listing->id }})">
 
-                                            </button>
+                                                                        <i class="fa fa-trash"></i>
 
-                                        </td>
+                                                                    </button>
 
-                                    </tr>
+                                                                </td>
+
+                                                            </tr>
 
                                 @empty
 

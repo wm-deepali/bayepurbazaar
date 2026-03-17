@@ -19,7 +19,7 @@ return new class extends Migration {
 
             $table->string('business_name');
 
-            $table->text('address');
+            $table->text('address')->nullable();
 
             $table->string('mobile');
 

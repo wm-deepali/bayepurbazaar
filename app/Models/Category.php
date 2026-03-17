@@ -15,4 +15,9 @@ class Category extends Model
         'show_header',
         'show_footer'
     ];
+
+    public function listings()
+    {
+        return $this->hasMany(Listing::class);
+    }
 }

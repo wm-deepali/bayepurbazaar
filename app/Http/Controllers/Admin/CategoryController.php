@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -35,28 +36,29 @@ class CategoryController extends Controller
         // Generate slug
         $slug = Str::slug($request->name);
 
-        if(empty($slug)){
-            $slug = str_replace(' ','-',$request->name);
+        if (empty($slug)) {
+            $slug = str_replace(' ', '-', $request->name);
         }
 
         // Ensure unique slug
         $originalSlug = $slug;
         $count = 1;
 
-        while(Category::where('slug',$slug)->exists()){
-            $slug = $originalSlug.'-'.$count;
+        while (Category::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
             $count++;
         }
 
         // Upload image
         $imageName = null;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
-            $imageName = time().'.'.$request->image->extension();
+            $file = $request->file('image');
 
-            $request->image->move(public_path('uploads/categories'),$imageName);
+            $filename = Str::slug($request->name) . '-' . time() . '.' . $file->extension();
 
+            $imageName = $file->storeAs('categories', $filename, 'public');
         }
 
 
@@ -79,7 +81,7 @@ class CategoryController extends Controller
         ]);
 
         return redirect()->route('admin.categories.index')
-            ->with('success','Category Created Successfully');
+            ->with('success', 'Category Created Successfully');
 
     }
 
@@ -98,40 +100,41 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|unique:categories,name,'.$id,
+            'name' => 'required|unique:categories,name,' . $id,
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp'
         ]);
 
         // Generate slug
         $slug = Str::slug($request->name);
 
-        if(empty($slug)){
-            $slug = str_replace(' ','-',$request->name);
+        if (empty($slug)) {
+            $slug = str_replace(' ', '-', $request->name);
         }
 
         $originalSlug = $slug;
         $count = 1;
 
-        while(Category::where('slug',$slug)->where('id','!=',$id)->exists()){
-            $slug = $originalSlug.'-'.$count;
+        while (Category::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+            $slug = $originalSlug . '-' . $count;
             $count++;
         }
 
 
         $imageName = $category->image;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
-            // Delete old image
-            if($category->image && file_exists(public_path('uploads/categories/'.$category->image))){
-                unlink(public_path('uploads/categories/'.$category->image));
+            if ($category->image && Storage::disk('public')->exists($category->image)) {
+                Storage::disk('public')->delete($category->image);
             }
 
-            $imageName = time().'.'.$request->image->extension();
+            $file = $request->file('image');
 
-            $request->image->move(public_path('uploads/categories'),$imageName);
+            $filename = Str::slug($request->name) . '-' . time() . '.' . $file->extension();
 
+            $imageName = $file->storeAs('categories', $filename, 'public');
         }
+
 
 
         $category->update([
@@ -153,7 +156,7 @@ class CategoryController extends Controller
         ]);
 
         return redirect()->route('admin.categories.index')
-            ->with('success','Category Updated Successfully');
+            ->with('success', 'Category Updated Successfully');
 
     }
 
@@ -164,14 +167,14 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         // Delete image
-        if($category->image && file_exists(public_path('uploads/categories/'.$category->image))){
-            unlink(public_path('uploads/categories/'.$category->image));
+        if ($category->image && Storage::disk('public')->exists($category->image)) {
+            Storage::disk('public')->delete($category->image);
         }
 
         $category->delete();
 
         return response()->json([
-            'message'=>'Category Deleted Successfully'
+            'message' => 'Category Deleted Successfully'
         ]);
 
     }

@@ -10,7 +10,9 @@ use App\Http\Controllers\Admin\LogoutController;
 use App\Http\Controllers\Admin\MandalController;
 use App\Http\Controllers\Admin\MandalMemberController;
 use App\Http\Controllers\Admin\ProfileSettingController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -21,6 +23,8 @@ Route::controller(FrontController::class)->group(function () {
 
     Route::get('/', 'home')->name('home');
 
+    Route::get('/search-listings', 'searchListings')->name('search.listings');
+
     Route::get('/about-us', 'about')->name('about');
 
     Route::get('/contact-us', 'contact')->name('contact');
@@ -28,6 +32,10 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('/disclaimer', 'disclaimer')->name('disclaimer');
 
     Route::get('/faq', 'faq')->name('faq');
+
+    Route::get('/blogs', 'blogs')->name('blogs');
+
+    Route::get('/blog/{slug}', 'blogDetail')->name('blog.detail');
 
     Route::get('/listing', 'listing')->name('listing');
 
@@ -40,6 +48,12 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('/member-enquiry', 'memberEnquiry')->name('member.enquiry');
 
     Route::get('/why-us', 'whyUs')->name('why.us');
+
+    Route::post('/submit-listing', 'submitListing')->name('listing.submit');
+
+    Route::post('/member-enquiry', 'submitMandalMember')->name('member.enquiry.store');
+
+    Route::post('/contact-submit', 'submitContact')->name('contact.submit');
 
 });
 
@@ -69,6 +83,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('faqs', FaqController::class)->names('faqs');
 
         Route::resource('blogs', BlogController::class)->names('blogs');
+
+        Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+
+        Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+        Route::get('/settings', [SettingController::class, 'edit'])
+            ->name('settings.edit');
+
+        Route::post('/settings', [SettingController::class, 'update'])
+            ->name('settings.update');
+
 
         Route::get('/logout', [LogoutController::class, 'logout']);
 

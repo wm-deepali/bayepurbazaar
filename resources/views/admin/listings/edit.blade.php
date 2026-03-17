@@ -41,7 +41,8 @@ Edit Listing
 
 <form id="listingForm"
 method="POST"
-action="{{ route('admin.listings.update',$listing->id) }}">
+action="{{ route('admin.listings.update',$listing->id) }}"
+enctype="multipart/form-data">
 
 @csrf
 @method('PUT')
@@ -279,6 +280,28 @@ value="{{ $listing->website }}">
 </div>
 
 
+<div class="form-group mt-3">
+
+<label>Business Image</label>
+
+@if($listing->image)
+<div class="mb-2">
+    <img src="{{ asset('storage/'.$listing->image) }}"
+         width="120"
+         style="border-radius:6px;">
+</div>
+@endif
+
+<input type="file"
+name="image"
+class="form-control"
+accept="image/*">
+
+<small class="text-muted">
+Upload new image to replace existing one
+</small>
+
+</div>
 
 <div class="form-group mt-3">
 

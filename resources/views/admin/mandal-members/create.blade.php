@@ -28,7 +28,6 @@
 
         </div>
 
-
         <div class="content-wrapper pb-4">
 
             <div class="card shadow-sm">
@@ -39,13 +38,12 @@
 
                 <div class="card-body">
 
-                    <form id="memberForm" method="POST" action="{{ route('admin.mandal-members.store') }}">
+                    <form id="memberForm" method="POST" action="{{ route('admin.mandal-members.store') }}"
+                        enctype="multipart/form-data">
 
                         @csrf
 
-
                         <div class="form-group">
-
                             <label>Mandal *</label>
 
                             <select name="mandal_id" class="form-control" required>
@@ -53,62 +51,51 @@
                                 <option value="">Select Mandal</option>
 
                                 @foreach($mandals as $mandal)
-
-                                    <option value="{{ $mandal->id }}">
-                                        {{ $mandal->name }}
-                                    </option>
-
+                                    <option value="{{ $mandal->id }}">{{ $mandal->name }}</option>
                                 @endforeach
 
                             </select>
-
                         </div>
 
+                        <div class="form-group mt-3">
+                            <label>Member Photo</label>
+                            <input type="file" name="photo" class="form-control">
+                        </div>
 
                         <div class="form-group mt-3">
-
                             <label>Member Name *</label>
-
                             <input type="text" name="name" class="form-control" required>
-
                         </div>
 
-
                         <div class="form-group mt-3">
-
                             <label>Designation</label>
-
                             <input type="text" name="designation" class="form-control">
-
                         </div>
 
+                        <div class="form-group mt-3">
+                            <label>Location</label>
+                            <input type="text" name="location" class="form-control">
+                        </div>
 
                         <div class="form-group mt-3">
+                            <label>Member Since</label>
+                            <input type="text" name="since" class="form-control" placeholder="e.g. Jan 2023">
+                        </div>
 
+                        <div class="form-group mt-3">
                             <label>Mobile *</label>
-
                             <input type="text" name="mobile" class="form-control" required>
-
                         </div>
 
-
                         <div class="form-group mt-3">
-
                             <label>WhatsApp</label>
-
                             <input type="text" name="whatsapp" class="form-control">
-
                         </div>
-
 
                         <div class="form-group mt-3">
-
                             <label>Email</label>
-
                             <input type="email" name="email" class="form-control">
-
                         </div>
-
 
                         <div class="form-group mt-3">
 
@@ -123,7 +110,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="mt-4">
 
@@ -155,7 +141,6 @@
 </div>
 
 @include('admin.footer')
-
 
 <script>
 

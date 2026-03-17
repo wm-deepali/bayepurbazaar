@@ -39,7 +39,8 @@
 
                 <div class="card-body">
 
-                    <form id="listingForm" method="POST" action="{{ route('admin.listings.store') }}">
+                    <form id="listingForm" method="POST" action="{{ route('admin.listings.store') }}"
+                        enctype="multipart/form-data">
 
                         @csrf
 
@@ -201,6 +202,17 @@
 
                         </div>
 
+                        <div class="form-group mt-3">
+
+                            <label>Business Image</label>
+
+                            <input type="file" name="image" class="form-control" accept="image/*">
+
+                            <small class="text-muted">
+                                Recommended size: 600×400px
+                            </small>
+
+                        </div>
 
                         <div class="form-group mt-3">
 

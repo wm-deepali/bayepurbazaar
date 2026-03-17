@@ -52,7 +52,8 @@ Edit Category
 
 <form id="categoryForm"
 method="POST"
-action="{{ route('admin.categories.update',$category->id) }}">
+action="{{ route('admin.categories.update',$category->id) }}"
+enctype="multipart/form-data">
 
 @csrf
 @method('PUT')
@@ -85,6 +86,45 @@ name="slug"
 id="slug"
 class="form-control"
 value="{{ $category->slug }}">
+
+</div>
+
+
+<div class="form-group mt-3">
+
+<label>Category Image</label>
+
+@if($category->image)
+<div class="mb-2">
+<img src="{{ asset('storage/'.$category->image) }}"
+style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+</div>
+@endif
+
+<input
+type="file"
+name="image"
+class="form-control">
+
+</div>
+
+
+<div class="form-group mt-3">
+
+<div class="custom-control custom-checkbox">
+
+<input
+type="checkbox"
+name="is_popular"
+id="popular"
+class="custom-control-input"
+{{ $category->is_popular ? 'checked' : '' }}>
+
+<label class="custom-control-label" for="popular">
+Popular Category
+</label>
+
+</div>
 
 </div>
 

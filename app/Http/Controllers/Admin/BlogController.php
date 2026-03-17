@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BlogController extends Controller
@@ -14,7 +15,7 @@ class BlogController extends Controller
     {
         $blogs = Blog::latest()->get();
 
-        return view('admin.blogs.index',compact('blogs'));
+        return view('admin.blogs.index', compact('blogs'));
     }
 
 
@@ -28,48 +29,49 @@ class BlogController extends Controller
     {
 
         $request->validate([
-            'title'=>'required',
-            'content'=>'required'
+            'title' => 'required',
+            'content' => 'required'
         ]);
 
         $slug = Str::slug($request->title);
 
-        if(empty($slug)){
-            $slug = str_replace(' ','-',$request->title);
+        if (empty($slug)) {
+            $slug = str_replace(' ', '-', $request->title);
         }
 
         $imageName = null;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
-            $imageName = time().'.'.$request->image->extension();
+            $file = $request->file('image');
 
-            $request->image->move(public_path('uploads/blogs'),$imageName);
+            $filename = Str::slug($request->title) . '-' . time() . '.' . $file->extension();
 
+            $imageName = $file->storeAs('blogs', $filename, 'public');
         }
 
 
         Blog::create([
 
-            'title'=>$request->title,
+            'title' => $request->title,
 
-            'slug'=>$slug,
+            'slug' => $slug,
 
-            'image'=>$imageName,
+            'image' => $imageName,
 
-            'short_description'=>$request->short_description,
+            'short_description' => $request->short_description,
 
-            'content'=>$request->content,
+            'content' => $request->content,
 
-            'show_home'=>$request->show_home ? 1:0,
+            'show_home' => $request->show_home ? 1 : 0,
 
-            'status'=>$request->status ? 1:0
+            'status' => $request->status ? 1 : 0
 
         ]);
 
 
         return redirect()->route('admin.blogs.index')
-            ->with('success','Blog Added Successfully');
+            ->with('success', 'Blog Added Successfully');
 
     }
 
@@ -78,57 +80,58 @@ class BlogController extends Controller
     {
         $blog = Blog::findOrFail($id);
 
-        return view('admin.blogs.edit',compact('blog'));
+        return view('admin.blogs.edit', compact('blog'));
     }
 
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
 
         $blog = Blog::findOrFail($id);
 
         $slug = Str::slug($request->title);
 
-        if(empty($slug)){
-            $slug = str_replace(' ','-',$request->title);
+        if (empty($slug)) {
+            $slug = str_replace(' ', '-', $request->title);
         }
 
         $imageName = $blog->image;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
-            if($blog->image && file_exists(public_path('uploads/blogs/'.$blog->image))){
-                unlink(public_path('uploads/blogs/'.$blog->image));
+            if ($blog->image) {
+                Storage::disk('public')->delete($blog->image);
             }
 
-            $imageName = time().'.'.$request->image->extension();
+            $file = $request->file('image');
 
-            $request->image->move(public_path('uploads/blogs'),$imageName);
+            $filename = Str::slug($request->title) . '-' . time() . '.' . $file->extension();
 
+            $imageName = $file->storeAs('blogs', $filename, 'public');
         }
 
 
         $blog->update([
 
-            'title'=>$request->title,
+            'title' => $request->title,
 
-            'slug'=>$slug,
+            'slug' => $slug,
 
-            'image'=>$imageName,
+            'image' => $imageName,
 
-            'short_description'=>$request->short_description,
+            'short_description' => $request->short_description,
 
-            'content'=>$request->content,
+            'content' => $request->content,
 
-            'show_home'=>$request->show_home ? 1:0,
+            'show_home' => $request->show_home ? 1 : 0,
 
-            'status'=>$request->status ? 1:0
+            'status' => $request->status ? 1 : 0
 
         ]);
 
 
         return redirect()->route('admin.blogs.index')
-            ->with('success','Blog Updated Successfully');
+            ->with('success', 'Blog Updated Successfully');
 
     }
 
@@ -138,14 +141,14 @@ class BlogController extends Controller
 
         $blog = Blog::findOrFail($id);
 
-        if($blog->image && file_exists(public_path('uploads/blogs/'.$blog->image))){
-            unlink(public_path('uploads/blogs/'.$blog->image));
+        if ($blog->image) {
+            Storage::disk('public')->delete($blog->image);
         }
 
         $blog->delete();
 
         return response()->json([
-            'message'=>'Blog Deleted Successfully'
+            'message' => 'Blog Deleted Successfully'
         ]);
 
     }

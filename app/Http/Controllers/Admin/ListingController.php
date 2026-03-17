@@ -8,6 +8,8 @@ use App\Models\Listing;
 use App\Models\Location;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ListingController extends Controller
 {
@@ -20,7 +22,7 @@ class ListingController extends Controller
             'subcategory'
         ])->latest()->get();
 
-        return view('admin.listings.index',compact('listings'));
+        return view('admin.listings.index', compact('listings'));
     }
 
 
@@ -28,9 +30,9 @@ class ListingController extends Controller
     {
         $locations = Location::get();
 
-        $categories = Category::where('status',1)->get();
+        $categories = Category::where('status', 1)->get();
 
-        return view('admin.listings.create',compact(
+        return view('admin.listings.create', compact(
             'locations',
             'categories'
         ));
@@ -48,10 +50,22 @@ class ListingController extends Controller
 
             'business_name' => 'required',
 
-            'mobile' => 'required'
+            'mobile' => 'required',
+
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
 
         ]);
 
+        $imageName = null;
+
+        if ($request->hasFile('image')) {
+
+            $file = $request->file('image');
+
+            $filename = Str::slug($request->business_name) . '-' . time() . '.' . $file->extension();
+
+            $imageName = $file->storeAs('listings', $filename, 'public');
+        }
 
         Listing::create([
 
@@ -81,13 +95,15 @@ class ListingController extends Controller
 
             'website' => $request->website,
 
+            'image' => $imageName,
+
             'status' => $request->status ? 1 : 0
 
         ]);
 
 
         return redirect()->route('admin.listings.index')
-            ->with('success','Listing Created Successfully');
+            ->with('success', 'Listing Created Successfully');
 
     }
 
@@ -99,14 +115,14 @@ class ListingController extends Controller
 
         $locations = Location::get();
 
-        $categories = Category::where('status',1)->get();
+        $categories = Category::where('status', 1)->get();
 
         $subcategories = SubCategory::where(
             'category_id',
             $listing->category_id
         )->get();
 
-        return view('admin.listings.edit',compact(
+        return view('admin.listings.edit', compact(
 
             'listing',
             'locations',
@@ -118,7 +134,7 @@ class ListingController extends Controller
     }
 
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
 
         $listing = Listing::findOrFail($id);
@@ -131,9 +147,27 @@ class ListingController extends Controller
 
             'business_name' => 'required',
 
-            'mobile' => 'required'
+            'mobile' => 'required',
+
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
 
         ]);
+
+
+        $imageName = $listing->image;
+
+        if ($request->hasFile('image')) {
+
+            if ($listing->image && Storage::disk('public')->exists($listing->image)) {
+                Storage::disk('public')->delete($listing->image);
+            }
+
+            $file = $request->file('image');
+
+            $filename = Str::slug($request->business_name) . '-' . time() . '.' . $file->extension();
+
+            $imageName = $file->storeAs('listings', $filename, 'public');
+        }
 
 
         $listing->update([
@@ -164,28 +198,33 @@ class ListingController extends Controller
 
             'website' => $request->website,
 
+            'image' => $imageName,
+
             'status' => $request->status ? 1 : 0
 
         ]);
 
 
         return redirect()->route('admin.listings.index')
-            ->with('success','Listing Updated Successfully');
+            ->with('success', 'Listing Updated Successfully');
 
     }
 
 
     public function destroy($id)
     {
+        $listing = Listing::findOrFail($id);
 
-        Listing::findOrFail($id)->delete();
+        if ($listing->image && Storage::disk('public')->exists($listing->image)) {
+            Storage::disk('public')->delete($listing->image);
+        }
+
+        $listing->delete();
 
         return response()->json([
-            'message'=>'Listing Deleted Successfully'
+            'message' => 'Listing Deleted Successfully'
         ]);
-
     }
-
 
     // AJAX Sub Categories
 
@@ -199,9 +238,9 @@ class ListingController extends Controller
 
         $html = '<option value="">Select Sub Category</option>';
 
-        foreach($subcategories as $sub){
+        foreach ($subcategories as $sub) {
 
-            $html .= '<option value="'.$sub->id.'">'.$sub->name.'</option>';
+            $html .= '<option value="' . $sub->id . '">' . $sub->name . '</option>';
 
         }
 

@@ -11,4 +11,9 @@ class Mandal extends Model
         'slug',
         'status'
     ];
+
+    public function members()
+    {
+        return $this->hasMany(MandalMember::class);
+    }
 }
