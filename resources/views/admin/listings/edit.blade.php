@@ -305,6 +305,29 @@ Upload new image to replace existing one
 
 <div class="form-group mt-3">
 
+    <label>Business Logo</label>
+
+    @if($listing->logo)
+        <div class="mb-2">
+            <img src="{{ asset('storage/'.$listing->logo) }}"
+                 width="100"
+                 style="border-radius:6px;object-fit:contain;background:#fff;padding:5px;">
+        </div>
+    @endif
+
+    <input type="file"
+           name="logo"
+           class="form-control"
+           accept="image/*">
+
+    <small class="text-muted">
+        Upload new logo to replace existing one
+    </small>
+
+</div>
+
+<div class="form-group mt-3">
+
 <div class="custom-control custom-checkbox">
 
 <input

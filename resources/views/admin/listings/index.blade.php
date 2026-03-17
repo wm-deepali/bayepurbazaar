@@ -47,6 +47,8 @@
 
                                     <th width="80">Image</th>
 
+                                    <th width="80">Logo</th>
+
                                     <th>Business</th>
 
                                     <th>Location</th>
@@ -73,7 +75,16 @@
                                                                 <td>
                                                                     <img src="{{ $listing->image
                                     ? asset('storage/' . $listing->image)
-                                    : asset('images/no-image.png') }}" width="50" height="50" style="object-fit:cover;border-radius:6px;">
+                                    : asset('images/no-image.png') }}" width="50" height="50"
+                                                                        style="object-fit:cover;border-radius:6px;">
+                                                                </td>
+
+                                                                <!-- LOGO -->
+                                                                <td>
+                                                                    <img src="{{ $listing->logo
+                                    ? asset('storage/' . $listing->logo)
+                                    : asset('images/no-image.png') }}" width="50" height="50"
+                                                                        style="object-fit:contain;border-radius:6px;background:#fff;padding:3px;">
                                                                 </td>
 
                                                                 <td>

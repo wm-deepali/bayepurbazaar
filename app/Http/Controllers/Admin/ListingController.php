@@ -52,7 +52,8 @@ class ListingController extends Controller
 
             'mobile' => 'required',
 
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
         ]);
 
@@ -65,6 +66,14 @@ class ListingController extends Controller
             $filename = Str::slug($request->business_name) . '-' . time() . '.' . $file->extension();
 
             $imageName = $file->storeAs('listings', $filename, 'public');
+        }
+
+        // LOGO
+        $logoName = null;
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = Str::slug($request->business_name) . '-logo-' . time() . '.' . $file->extension();
+            $logoName = $file->storeAs('listings', $filename, 'public');
         }
 
         Listing::create([
@@ -96,6 +105,8 @@ class ListingController extends Controller
             'website' => $request->website,
 
             'image' => $imageName,
+
+            'logo' => $logoName,
 
             'status' => $request->status ? 1 : 0
 
@@ -149,11 +160,13 @@ class ListingController extends Controller
 
             'mobile' => 'required',
 
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
         ]);
 
 
+        // IMAGE
         $imageName = $listing->image;
 
         if ($request->hasFile('image')) {
@@ -163,12 +176,23 @@ class ListingController extends Controller
             }
 
             $file = $request->file('image');
-
-            $filename = Str::slug($request->business_name) . '-' . time() . '.' . $file->extension();
-
+            $filename = Str::slug($request->business_name) . '-img-' . time() . '.' . $file->extension();
             $imageName = $file->storeAs('listings', $filename, 'public');
         }
 
+        // LOGO
+        $logoName = $listing->logo;
+
+        if ($request->hasFile('logo')) {
+
+            if ($listing->logo && Storage::disk('public')->exists($listing->logo)) {
+                Storage::disk('public')->delete($listing->logo);
+            }
+
+            $file = $request->file('logo');
+            $filename = Str::slug($request->business_name) . '-logo-' . time() . '.' . $file->extension();
+            $logoName = $file->storeAs('listings', $filename, 'public');
+        }
 
         $listing->update([
 
@@ -198,6 +222,8 @@ class ListingController extends Controller
 
             'website' => $request->website,
 
+            'logo' => $logoName,
+
             'image' => $imageName,
 
             'status' => $request->status ? 1 : 0
@@ -219,6 +245,10 @@ class ListingController extends Controller
             Storage::disk('public')->delete($listing->image);
         }
 
+        if ($listing->logo && Storage::disk('public')->exists($listing->logo)) {
+            Storage::disk('public')->delete($listing->logo);
+        }
+        
         $listing->delete();
 
         return response()->json([

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>बायेपुरबाजार.कॉम</title>
-
+    <title>
+        @yield('title', 'बयेपुरबाजार.कॉम')
+    </title>
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -19,10 +20,6 @@
     <style>
         body {
             font-family: 'Noto Sans Devanagari', system-ui, sans-serif;
-        }
-
-        .hero-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://picsum.photos/id/1015/1920/600') center/cover;
         }
 
         .listing-card {

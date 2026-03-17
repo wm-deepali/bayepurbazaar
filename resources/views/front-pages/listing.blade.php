@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>बायेपुर बाज़ार - सभी लिस्टिंग्स</title>
+        <title>बयेपुर बाज़ार - सभी लिस्टिंग्स</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
@@ -221,6 +221,7 @@
                     <div class="space-y-6">
 
                         @foreach($listings as $listing)
+<a href="{{ route('listing.show', $listing->id) }}" class="block">
 
                                         <div
                                             class="listing-card bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col md:flex-row">
@@ -304,7 +305,7 @@
                                             </div>
 
                                         </div>
-
+</a>
                         @endforeach
 
                     </div>

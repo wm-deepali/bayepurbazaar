@@ -12,7 +12,7 @@
                     <span class="text-2xl font-bold tracking-wide">BAYEPURBAZAAR</span>
                 </div>
                 <p class="text-sm text-gray-400 leading-7 max-w-md">
-                    अपना गाँव, अपना बाज़ार, अपना विकास। बायेपुर का डिजिटल बाज़ार।
+                    अपना गाँव, अपना बाज़ार, अपना विकास। बयेपुर का डिजिटल बाज़ार।
                 </p>
             </div>
 
@@ -53,7 +53,7 @@
 
                     <li>
                         <a href="{{ route('why.us') }}" class="hover:text-teal-300 transition">
-                            बायेपुर बाज़ार क्यों
+                            बयेपुर बाज़ार क्यों
                         </a>
                     </li>
 
@@ -78,13 +78,29 @@
                 </ul>
             </div>
 
+            @php
+                $footerPages = App\Models\Page::where('status', 1)
+                    ->where('show_in_menu', 1)
+                    ->orderBy('menu_name')
+                    ->get();
+            @endphp
             <!-- Terms & Policies -->
             <div>
                 <h5 class="font-semibold mb-5 text-teal-400 text-base">नियम एवं नीतियाँ</h5>
                 <ul class="space-y-3 text-sm text-gray-300">
-                    <li><a href="{{  route('terms')  }}" class="hover:text-teal-300 transition">नियम एवं शर्तें</a></li>
-                    <li><a href="{{ route('privacy') }}" class="hover:text-teal-300 transition">गोपनीयता नीति</a></li>
-                    <li><a href="{{ route('disclaimer')  }}" class="hover:text-teal-300 transition">अस्वीकरण</a></li>
+                    @forelse($footerPages as $page)
+
+                        <li>
+                            <a href="{{ url('/page/' . $page->slug) }}" class="hover:text-teal-300 transition">
+
+                                {{ $page->menu_name }}
+
+                            </a>
+                        </li>
+
+                    @empty
+
+                    @endforelse
                     <li><a href="{{ route('contact') }}" class="hover:text-teal-300 transition">सहायता एवं समर्थन</a>
                     </li>
                     <li><a href="{{ route('faq') }}" class="hover:text-teal-300 transition">सामान्य प्रश्न (FAQ)</a>
@@ -103,13 +119,17 @@
                 <p>© 2026 BayepurBazaar.com | सभी अधिकार सुरक्षित</p>
 
                 <div class="flex flex-wrap justify-center gap-5">
-                    <a href="{{ route('privacy') }}" class="hover:text-white transition">
-                        गोपनीयता नीति
-                    </a>
 
-                    <a href="{{ route('terms') }}" class="hover:text-white transition">
-                        उपयोग की शर्तें
-                    </a>
+                    @forelse($footerPages as $page)
+
+                        <a href="{{ url('/page/' . $page->slug) }}" class="hover:text-white transition">
+
+                            {{ $page->menu_name }}
+
+                        </a>
+
+                    @empty
+                    @endforelse
 
                     <a href="{{ route('contact') }}" class="hover:text-white transition">
                         संपर्क
@@ -118,7 +138,7 @@
 
                 <p class="flex items-center gap-2">
                     <i class="fa-solid fa-heart text-red-500"></i>
-                    बायेपुर के लिए बनाया गया
+                    बयेपुर के लिए बनाया गया
                 </p>
 
             </div>

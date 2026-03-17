@@ -1,17 +1,26 @@
 @extends('layouts.app')
 
+<style>
+.hero-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('{{ $hero && $hero->background_image 
+        ? asset('storage/'.$hero->background_image) 
+        : 'https://picsum.photos/id/1015/1920/600' }}') center/cover;
+}
+</style>
+
 @section('content')
 
     <!-- HERO -->
     <div class="hero-bg h-[380px] flex items-center text-white">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-5xl font-bold mb-4 leading-tight">बायेपुर का अपना बाज़ार</h2>
-            <p class="text-xl max-w-2xl mx-auto">अपने गांव के व्यापारियों से सीधे जुड़ें। खोजें, कॉल करें, ऑर्डर करें – सब
-                कुछ एक क्लिक में।</p>
+            <h2 class="text-5xl font-bold mb-4 leading-tight">{{ $hero->title ?? 'बयेपुर का अपना बाज़ार'}}</h2>
+            <p class="text-xl max-w-2xl mx-auto">{{ $hero->subtitle ?? 'अपने गांव के व्यापारियों से सीधे जुड़ें। खोजें, कॉल करें, ऑर्डर करें – सब
+                    कुछ एक क्लिक में।'}}</p>
             <div class="mt-8 flex justify-center gap-4">
                 <button onclick="document.getElementById('listings-section').scrollIntoView({behavior:'smooth'})"
                     class="bg-orange-600 hover:bg-orange-700 px-10 py-4 rounded-3xl text-lg font-semibold shadow-lg">
-                    अभी खोजें
+                    {{ $hero->button_text ?? 'अभी खोजें'}}
                 </button>
             </div>
         </div>
@@ -139,8 +148,9 @@
 
                     </div>
 
-                    <a href="{{ route('listing')}}" class="inline-block mt-8 px-8 py-4 rounded-full font-semibold text-white
-                                                                bg-[rgb(13,148,136)] hover:bg-[rgb(15,118,110)] transition">
+                    <a href="{{ route('listing')}}"
+                        class="inline-block mt-8 px-8 py-4 rounded-full font-semibold text-white
+                                                                                                    bg-[rgb(13,148,136)] hover:bg-[rgb(15,118,110)] transition">
 
                         View All Listings →
                     </a>
@@ -155,45 +165,75 @@
     </div>
 
     <!-- ABOUT COMPANY -->
-    <div class="bg-teal-50 py-16">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl font-bold text-teal-800 mb-6">बायेपुर बाज़ार के बारे में</h2>
-                    <p class="text-lg leading-relaxed text-gray-700">
-                        बायेपुरबाज़ार.कॉम बायेपुर गांव का अपना डिजिटल बाज़ार है। हमारा मिशन है कि हर स्थानीय व्यापारी को
-                        ऑनलाइन प्लेटफॉर्म मिले ताकि वह अपने गांव के लोगों तक आसानी से पहुँच सके।
-                        “अपना गाँव, अपना बाज़ार, अपना विकास” – यही हमारा संकल्प है।
-                    </p>
-                    <div class="mt-8 grid grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-teal-600">1200+</div>
-                            <div class="text-sm text-gray-600 mt-1">लिस्टिंग</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-teal-600">850+</div>
-                            <div class="text-sm text-gray-600 mt-1">व्यापारी</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-teal-600">24×7</div>
-                            <div class="text-sm text-gray-600 mt-1">सपोर्ट</div>
+    @if($homeSection)
+        <div class="bg-teal-50 py-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+
+                    <!-- LEFT CONTENT -->
+                    <div>
+                        <h2 class="text-4xl font-bold text-teal-800 mb-6">
+                            {{ $homeSection->title }}
+                        </h2>
+
+                        <p class="text-lg leading-relaxed text-gray-700">
+                            {!! $homeSection->description !!}
+                        </p>
+
+                        <div class="mt-8 grid grid-cols-3 gap-6">
+
+                            <!-- STAT 1 -->
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-teal-600">
+                                    {{ $homeSection->stat_1 }}
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    {{ $homeSection->stat_1_label }}
+                                </div>
+                            </div>
+
+                            <!-- STAT 2 -->
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-teal-600">
+                                    {{ $homeSection->stat_2 }}
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    {{ $homeSection->stat_2_label }}
+                                </div>
+                            </div>
+
+                            <!-- STAT 3 -->
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-teal-600">
+                                    {{ $homeSection->stat_3 }}
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    {{ $homeSection->stat_3_label }}
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-3xl shadow-inner">
-                    <img src="https://picsum.photos/id/1016/600/400" alt="बायेपुर बाजार" class="rounded-2xl">
+
+                    <!-- RIGHT IMAGE -->
+                    <div class="bg-white p-8 rounded-3xl shadow-inner">
+                        <img src="{{ $homeSection->image
+                ? asset('storage/' . $homeSection->image)
+                : 'https://picsum.photos/id/1016/600/400' }}" alt="about" class="rounded-2xl w-full h-auto">
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <!-- ABOUT BAYEPUR -->
     <div class="max-w-7xl mx-auto px-6 py-16">
-        <h2 class="text-4xl font-bold text-center mb-8 text-gray-800">बायेपुर के बारे में</h2>
+        <h2 class="text-4xl font-bold text-center mb-8 text-gray-800">बयेपुर के बारे में</h2>
         <div class="max-w-3xl mx-auto text-center text-lg leading-relaxed text-gray-700">
-            बायेपुर घाज़ीपुर जिले का एक छोटा लेकिन समृद्ध गांव है। यहाँ की मुख्य अर्थव्यवस्था कृषि पर आधारित है। गेहूँ, धान,
+            बयेपुर घाज़ीपुर जिले का एक छोटा लेकिन समृद्ध गांव है। यहाँ की मुख्य अर्थव्यवस्था कृषि पर आधारित है। गेहूँ, धान,
             आलू और सब्जियों की खेती यहां प्रमुख है।
-            गांव में अच्छी सड़कें, स्कूल, क्लिनिक और छोटे बाजार हैं। बायेपुर के लोग मेहनती, मेहमाननवाज़ और प्रगतिशील हैं।
+            गांव में अच्छी सड़कें, स्कूल, क्लिनिक और छोटे बाजार हैं। बयेपुर के लोग मेहनती, मेहमाननवाज़ और प्रगतिशील हैं।
             हमारा प्लेटफॉर्म इसी गांव को डिजिटल रूप से सशक्त बनाने का प्रयास है।
         </div>
     </div>
@@ -207,7 +247,7 @@
                     <div class="w-20 h-20 mx-auto bg-teal-100 rounded-2xl flex items-center justify-center text-4xl">📍
                     </div>
                     <h4 class="font-semibold mt-6 text-xl">स्थानीय फोकस</h4>
-                    <p class="text-sm text-gray-600 mt-3">केवल बायेपुर और आसपास के क्षेत्र</p>
+                    <p class="text-sm text-gray-600 mt-3">केवल बयेपुर और आसपास के क्षेत्र</p>
                 </div>
                 <div class="text-center">
                     <div class="w-20 h-20 mx-auto bg-orange-100 rounded-2xl flex items-center justify-center text-4xl">✅

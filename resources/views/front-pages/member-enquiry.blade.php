@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>मेंबर बनें | BayepurBazaar.com - बायेपुर के साथ जुड़ें</title>
+        <title>मेंबर बनें | BayepurBazaar.com - बयेपुर के साथ जुड़ें</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
@@ -34,16 +34,16 @@
         <section class="gradient-bg text-white py-20 md:py-28">
             <div class="max-w-6xl mx-auto px-6 text-center">
                 <div class="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full mb-6 text-sm font-medium">
-                    बायेपुर के लिए कुछ करना चाहते हैं?
+                    बयेपुर के लिए कुछ करना चाहते हैं?
                 </div>
 
                 <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight drop-shadow-lg">
-                    बायेपुर का हिस्सा बनें
+                    बयेपुर का हिस्सा बनें
                 </h1>
 
                 <p class="text-xl md:text-2xl max-w-4xl mx-auto mb-10 font-light opacity-95">
-                    चाहे आप बायेपुर के मूल निवासी हों, बाहर रहते हों, या सिर्फ इस गाँव से लगाव रखते हों...<br>
-                    <span class="font-semibold text-orange-300">अगर आप बायेपुर के लोगों की मदद करना चाहते हैं,</span><br>
+                    चाहे आप बयेपुर के मूल निवासी हों, बाहर रहते हों, या सिर्फ इस गाँव से लगाव रखते हों...<br>
+                    <span class="font-semibold text-orange-300">अगर आप बयेपुर के लोगों की मदद करना चाहते हैं,</span><br>
                     दुकानदारों को डिजिटल दुनिया में आगे बढ़ाना चाहते हैं,<br>
                     या मंडल के माध्यम से गाँव की समस्याओं का समाधान निकालना चाहते हैं —
                 </p>
@@ -53,7 +53,7 @@
                 </div>
 
                 <p class="text-lg md:text-xl mt-6 opacity-90 max-w-3xl mx-auto">
-                    हम एक साथ मिलकर बायेपुर को और मजबूत, और डिजिटल बनाएंगे।<br>
+                    हम एक साथ मिलकर बयेपुर को और मजबूत, और डिजिटल बनाएंगे।<br>
                     आपकी छोटी-सी भागीदारी बड़े बदलाव ला सकती है।
                 </p>
             </div>
@@ -104,13 +104,13 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">आप बायेपुर से कैसे जुड़े हैं?
+                            <label class="block text-sm font-medium text-gray-700 mb-2">आप बयेपुर से कैसे जुड़े हैं?
                                 *</label>
                             <select name="relation" required
                                 class="w-full border border-gray-300 rounded-xl py-4 px-5 focus:outline-none input-focus text-lg bg-white">
                                 <option value="">चुनें</option>
-                                <option value="native">मैं बायेपुर का मूल निवासी हूँ</option>
-                                <option value="resident">मैं अभी बायेपुर में रहता हूँ</option>
+                                <option value="native">मैं बयेपुर का मूल निवासी हूँ</option>
+                                <option value="resident">मैं अभी बयेपुर में रहता हूँ</option>
                                 <option value="nri">मैं बाहर रहता हूँ</option>
                                 <option value="wellwisher">मैं शुभचिंतक हूँ</option>
                             </select>
@@ -185,11 +185,11 @@
                         <button type="submit"
                             class="w-full bg-gradient-to-r from-teal-600 to-teal-800 hover:from-teal-700 hover:to-teal-900 text-white py-5 rounded-2xl font-bold text-xl shadow-xl transition transform hover:scale-[1.02]">
                             <i class="fa-solid fa-heart mr-3"></i>
-                            बायेपुर के साथ जुड़ने की इच्छा जताएँ
+                            बयेपुर के साथ जुड़ने की इच्छा जताएँ
                         </button>
 
                         <p class="text-center text-sm text-gray-500 mt-6">
-                            हम आपकी जानकारी का सम्मान करते हैं और केवल बायेपुर से जुड़े कार्यों के लिए उपयोग करेंगे।
+                            हम आपकी जानकारी का सम्मान करते हैं और केवल बयेपुर से जुड़े कार्यों के लिए उपयोग करेंगे।
                         </p>
                     </form>
                 </div>
@@ -202,7 +202,7 @@
                     </div>
                     <div class="p-6 bg-white rounded-2xl shadow-sm border">
                         <i class="fa-solid fa-users text-4xl text-teal-600 mb-4"></i>
-                        <p class="font-medium">बायेपुर के असली लोग</p>
+                        <p class="font-medium">बयेपुर के असली लोग</p>
                     </div>
                     <div class="p-6 bg-white rounded-2xl shadow-sm border">
                         <i class="fa-solid fa-clock-rotate-left text-4xl text-teal-600 mb-4"></i>
@@ -219,7 +219,7 @@
                     एक कदम से शुरू होती है बड़ी यात्रा
                 </h3>
                 <p class="text-xl mb-10 opacity-90">
-                    आपका यह छोटा सा कदम बायेपुर के किसी दुकानदार की जिंदगी बदल सकता है,<br>
+                    आपका यह छोटा सा कदम बयेपुर के किसी दुकानदार की जिंदगी बदल सकता है,<br>
                     किसी परिवार की मदद कर सकता है, और गाँव को मजबूत बना सकता है।
                 </p>
                 <button onclick="document.getElementById('memberEnquiryForm').scrollIntoView({behavior:'smooth'})"

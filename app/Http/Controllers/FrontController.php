@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutSetting;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Contact;
@@ -10,8 +11,11 @@ use App\Models\Listing;
 use App\Models\Location;
 use App\Models\Mandal;
 use App\Models\MandalMember;
+use App\Models\Page;
 use App\Models\Setting;
 use App\Models\SubCategory;
+use App\Models\WhyBenefit;
+use App\Models\WhySetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -45,8 +49,10 @@ class FrontController extends Controller
         $categories = Category::where('status', 1)->get();
 
         $locations = Location::get();
+        $homeSection = \App\Models\HomeSection::first();
+        $hero = \App\Models\HomeHero::first();
 
-        return view('front-pages.home', compact('listings', 'faqs', 'categories', 'popularCategories', 'locations'));
+        return view('front-pages.home', compact('listings', 'faqs', 'categories', 'popularCategories', 'locations', 'homeSection','hero'));
     }
 
     public function searchListings(Request $request)
@@ -63,9 +69,9 @@ class FrontController extends Controller
 
     public function about()
     {
-        return view('front-pages.about-us');
+        $about = AboutSetting::first();
+        return view('front-pages.about-us', compact('about'));
     }
-
 
 
     public function contact()
@@ -73,11 +79,6 @@ class FrontController extends Controller
         $settings = Setting::first();
 
         return view('front-pages.contact-us', compact('settings'));
-    }
-
-    public function disclaimer()
-    {
-        return view('front-pages.disclaimer');
     }
 
     public function faq()
@@ -148,14 +149,12 @@ class FrontController extends Controller
         ));
     }
 
-    public function privacy()
+    public function pages($slug)
     {
-        return view('front-pages.privacy-policy');
-    }
-
-    public function terms()
-    {
-        return view('front-pages.terms-and-conditions');
+        $page = Page::where('slug', urldecode($slug))
+            ->where('status', 1)
+            ->firstOrFail();
+        return view('front-pages.page', compact('page'));
     }
 
     public function mandalMembers()
@@ -182,7 +181,21 @@ class FrontController extends Controller
 
     public function whyUs()
     {
-        return view('front-pages.why-us');
+        $data = WhySetting::first();
+
+        $shopkeeperBenefits = WhyBenefit::where('type', 'shopkeeper')
+            ->orderBy('sort_order')
+            ->get();
+
+        $customerBenefits = WhyBenefit::where('type', 'customer')
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('front-pages.why-us', compact(
+            'data',
+            'shopkeeperBenefits',
+            'customerBenefits'
+        ));
     }
 
 
@@ -321,6 +334,14 @@ class FrontController extends Controller
         ]);
 
         return back()->with('success', 'धन्यवाद! आपकी रुचि दर्ज हो गई है। हम जल्द संपर्क करेंगे।');
+    }
+
+    public function listingDetail($id)
+    {
+        $listing = Listing::with(['category', 'subcategory', 'location'])
+            ->findOrFail($id);
+
+        return view('front-pages.listing_detail', compact('listing'));
     }
 
 }

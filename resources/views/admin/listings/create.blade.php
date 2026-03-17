@@ -216,6 +216,18 @@
 
                         <div class="form-group mt-3">
 
+                            <label>Business Logo</label>
+
+                            <input type="file" name="logo" class="form-control" accept="image/*">
+
+                            <small class="text-muted">
+                                Recommended: square logo (200×200px)
+                            </small>
+
+                        </div>
+
+                        <div class="form-group mt-3">
+
                             <div class="custom-control custom-checkbox">
 
                                 <input type="checkbox" name="status" id="status" class="custom-control-input" checked>

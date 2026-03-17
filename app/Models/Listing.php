@@ -20,6 +20,7 @@ class Listing extends Model
         'working_hours',
         'closed_days',
         'website',
+        'logo',
         'image',
         'status'
     ];

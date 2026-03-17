@@ -187,11 +187,11 @@ value="{{ $member->email }}">
 <option value="">Select</option>
 
 <option value="native" {{ $member->relation == 'native' ? 'selected':'' }}>
-मैं बायेपुर का मूल निवासी हूँ
+मैं बयेपुर का मूल निवासी हूँ
 </option>
 
 <option value="resident" {{ $member->relation == 'resident' ? 'selected':'' }}>
-मैं अभी बायेपुर में रहता हूँ
+मैं अभी बयेपुर में रहता हूँ
 </option>
 
 <option value="nri" {{ $member->relation == 'nri' ? 'selected':'' }}>

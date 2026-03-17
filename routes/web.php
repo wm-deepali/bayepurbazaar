@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutSettingController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\HomeHeroController;
+use App\Http\Controllers\Admin\HomeIntroController;
 use App\Http\Controllers\Admin\ListingController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LogoutController;
 use App\Http\Controllers\Admin\MandalController;
 use App\Http\Controllers\Admin\MandalMemberController;
+use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProfileSettingController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\WhySettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -29,8 +34,6 @@ Route::controller(FrontController::class)->group(function () {
 
     Route::get('/contact-us', 'contact')->name('contact');
 
-    Route::get('/disclaimer', 'disclaimer')->name('disclaimer');
-
     Route::get('/faq', 'faq')->name('faq');
 
     Route::get('/blogs', 'blogs')->name('blogs');
@@ -39,9 +42,9 @@ Route::controller(FrontController::class)->group(function () {
 
     Route::get('/listing', 'listing')->name('listing');
 
-    Route::get('/privacy-policy', 'privacy')->name('privacy');
+    Route::get('/listing/{id}', 'listingDetail')->name('listing.show');
 
-    Route::get('/terms-and-conditions', 'terms')->name('terms');
+    Route::get('/page/{slug}', 'pages')->name('page.show');
 
     Route::get('/mandal-members', 'mandalMembers')->name('mandal.members');
 
@@ -85,15 +88,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('blogs', BlogController::class)->names('blogs');
 
         Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
-
         Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
-        Route::get('/settings', [SettingController::class, 'edit'])
-            ->name('settings.edit');
+        Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 
-        Route::post('/settings', [SettingController::class, 'update'])
-            ->name('settings.update');
+        Route::get('about-settings', [AboutSettingController::class, 'edit'])->name('about.edit');
+        Route::post('about-settings', [AboutSettingController::class, 'update'])->name('about.update');
 
+        Route::get('why-settings', [WhySettingController::class, 'edit'])->name('why.edit');
+        Route::post('why-settings', [WhySettingController::class, 'update'])->name('why.update');
+        Route::post('why-benefit/store', [WhySettingController::class, 'storeBenefit'])->name('why.benefit.store');
+        Route::get('why-benefit/delete/{id}', [WhySettingController::class, 'deleteBenefit'])->name('why.benefit.delete');
+        Route::post('why-benefit-update', [WhySettingController::class, 'updateBenefit'])->name('why.benefit.update');
+
+        Route::resource('pages', PageController::class);
+
+        Route::get('home-intro', [HomeIntroController::class, 'edit'])->name('home-intro.edit');
+        Route::post('home-intro', [HomeIntroController::class, 'update'])->name('home-intro.update');
+
+        Route::get('admin/home-hero', [HomeHeroController::class, 'edit'])->name('home-hero.edit');
+        Route::post('admin/home-hero', [HomeHeroController::class, 'update'])->name('home-hero.update');
 
         Route::get('/logout', [LogoutController::class, 'logout']);
 

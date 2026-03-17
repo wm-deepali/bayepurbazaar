@@ -58,7 +58,7 @@
 
                                 @forelse($contacts as $contact)
 
-                                    <tr>
+                                    <tr id="row{{ $contact->id }}">
 
                                         <td>{{ $loop->iteration }}</td>
 
@@ -81,12 +81,11 @@
                                         <td>
 
                                             <button class="btn btn-danger btn-sm delete-contact"
-                                                data-id="{{ $contact->id }}">
+                                                onclick="deleteContact({{ $contact->id }})">
 
                                                 <i class="fa fa-trash"></i>
 
                                             </button>
-
                                         </td>
 
                                     </tr>
@@ -124,32 +123,47 @@
 </div>
 <script>
 
-    $('.delete-contact').click(function () {
+    function deleteContact(id) {
+        Swal.fire({
+            title: 'Delete Contact Inquiry?',
+            text: "This action cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete'
+        })
+            .then((result) => {
 
-        let id = $(this).data('id');
+                if (result.isConfirmed) {
 
-        if (confirm('Are you sure to delete this enquiry?')) {
+                    $.ajax({
 
-            $.ajax({
+                        url: "{{ url('/admin/contacts') }}/" + id,
 
-                url: '/admin/contacts/' + id,
-                type: 'DELETE',
+                        type: "DELETE",
 
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
 
-                success: function () {
+                        success: function (res) {
 
-                    location.reload();
+                            Swal.fire('Deleted!', res.message, 'success');
+
+                            $("#row" + id).fadeOut(400, function () {
+                                $(this).remove();
+                            });
+
+                        }
+
+                    });
 
                 }
 
             });
 
-        }
+    }
 
-    });
 
 </script>
 @include('admin.footer')

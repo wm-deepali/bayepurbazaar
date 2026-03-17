@@ -33,7 +33,7 @@ class LoginController extends Controller
                 return redirect()->to('admin/dashboard');
             }
 
-            return redirect()->to('/home');
+            return redirect()->to('/login');
         }
 
         return back()->with('error', 'Email-Address And Password Are Wrong.');
