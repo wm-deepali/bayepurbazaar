@@ -19,6 +19,36 @@
     font-size: 20px;
   }
 </style>
+<style>
+    .enquiry-card {
+        transition: all 0.2s ease;
+    }
+    
+    .enquiry-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Small improvement for mobile */
+    @media (max-width: 576px) {
+        .enquiry-card .card-body {
+            padding: 14px !important;
+        }
+    }
+    .mandal-card {
+        transition: all 0.3s ease;
+    }
+    
+    .mandal-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Badge styling */
+    .badge {
+        font-weight: 500;
+    }
+</style>
 
 <div class="main-section">
   @include('admin.header')
@@ -75,162 +105,324 @@
     </div>
 
     <!-- Stats Cards Separate Row -->
-    <div class="row g-4">
-
-      <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 stats-card h-100">
-          <div class="card-body d-flex justify-content-between align-items-center px-3 py-3">
-            <div>
-              <small class="text-muted fw-semibold">कुल लिस्टिंग्स</small>
-              <h2 class="fw-bold mb-1">{{ $totalListings }}</h2>
-              <small class="text-success fw-semibold">
-                आज की {{ $todayListings }}
-              </small>
+<!-- Beautiful Light Pastel Stats Cards -->
+<div class="row g-3 g-lg-4">
+    
+    <!-- Card 1: कुल लिस्टिंग्स -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+        <div class="card border-0 shadow-sm rounded-3 stats-card h-100" 
+             style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe);">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box" style="background: #bae6fd; color: #0369a1; width: 46px; height: 46px; font-size: 18px;">
+                        <i class="fa fa-store"></i>
+                    </div>
+                    <small class="text-success fw-medium">+{{ $todayListings }}</small>
+                </div>
+                
+                <h5 class="text-muted fw-medium mb-1 small">कुल लिस्टिंग्स</h5>
+                <h2 class="fw-bold text-dark mb-0">{{ $totalListings }}</h2>
+                
+                <div class="mt-3">
+                    <div class="progress" style="height: 5px; background: #e0f2fe;">
+                        <div class="progress-bar bg-info" style="width: 78%;"></div>
+                    </div>
+                </div>
             </div>
-            <div class="icon-box bg-success-subtle">
-              <i class="fa fa-store text-success"></i>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 stats-card h-100">
-          <div class="card-body d-flex justify-content-between align-items-center px-3 py-3">
-            <div>
-              <small class="text-muted fw-semibold">नई Enquiries</small>
-              <h2 class="fw-bold mb-1">{{ $totalEnquiries }}</h2>
-              <small class="text-warning fw-semibold">आज की {{ $todayEnquiries }}</small>
-            </div>
-            <div class="icon-box bg-warning-subtle">
-              <i class="fa fa-envelope text-warning"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 stats-card h-100">
-          <div class="card-body d-flex justify-content-between align-items-center px-3 py-3">
-            <div>
-              <small class="text-muted fw-semibold">सक्रिय सदस्य</small>
-              <h2 class="fw-bold mb-1">{{ $activeMembers }}</h2>
-              <small class="text-primary fw-semibold">
-                आज {{ $todayMembers }} नए सदस्य
-              </small>
-            </div>
-            <div class="icon-box bg-primary-subtle">
-              <i class="fa fa-users text-primary"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm rounded-4 stats-card h-100">
-          <div class="card-body d-flex justify-content-between align-items-center px-3 py-3">
-            <div>
-              <small class="text-muted fw-semibold">कुल Views</small>
-              <h2 class="fw-bold mb-1">12,840</h2>
-              <small class="text-success fw-semibold">+22% कल से</small>
-            </div>
-            <div class="icon-box bg-success-subtle">
-              <i class="fa fa-eye text-success"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Card 2: नई Enquiries -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+        <div class="card border-0 shadow-sm rounded-3 stats-card h-100" 
+             style="background: linear-gradient(135deg, #fefce8, #fef9c3);">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box" style="background: #fef08c; color: #854d0e; width: 46px; height: 46px; font-size: 18px;">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <small class="text-warning fw-medium">+{{ $todayEnquiries }}</small>
+                </div>
+                
+                <h5 class="text-muted fw-medium mb-1 small">नई Enquiries</h5>
+                <h2 class="fw-bold text-dark mb-0">{{ $totalEnquiries }}</h2>
+                
+                <div class="mt-3">
+                    <div class="progress" style="height: 5px; background: #fefce8;">
+                        <div class="progress-bar bg-warning" style="width: 65%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3: सक्रिय सदस्य -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 mb-2">
+        <div class="card border-0 shadow-sm rounded-3 stats-card h-100" 
+             style="background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box" style="background: #86efac; color: #166534; width: 46px; height: 46px; font-size: 18px;">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <small class="text-success fw-medium">+{{ $todayMembers }}</small>
+                </div>
+                
+                <h5 class="text-muted fw-medium mb-1 small">सक्रिय सदस्य</h5>
+                <h2 class="fw-bold text-dark mb-0">{{ $activeMembers }}</h2>
+                
+                <div class="mt-3">
+                    <div class="progress" style="height: 5px; background: #f0fdf4;">
+                        <div class="progress-bar bg-success" style="width: 82%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4: कुल Views -->
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="card border-0 shadow-sm rounded-3 stats-card h-100" 
+             style="background: linear-gradient(135deg, #f5f3ff, #ede9fe);">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-box" style="background: #c4b5fd; color: #4c1d95; width: 46px; height: 46px; font-size: 18px;">
+                        <i class="fa fa-eye"></i>
+                    </div>
+                    <small class="text-purple fw-medium">+22%</small>
+                </div>
+                
+                <h5 class="text-muted fw-medium mb-1 small">कुल Views</h5>
+                <h2 class="fw-bold text-dark mb-0">12,840</h2>
+                
+                <div class="mt-3">
+                    <div class="progress" style="height: 5px; background: #f5f3ff;">
+                        <div class="progress-bar bg-purple" style="width: 90%; background: #8b5cf6;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
     <!-- Table -->
     <!-- Recent Enquiries -->
-    <div class="row mt-4">
-      <div class="col-12">
+<!-- Recent Enquiries - Responsive Table + Card View -->
+<div class="row mt-4">
+    <div class="col-12">
         <div class="card border-0 shadow-sm rounded-4">
-          <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0 fw-bold text-dark">Recent Enquiries (Last 7 Days)</h5>
+            
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+                <h5 class="mb-0 fw-bold text-dark">Recent Enquiries (Last 7 Days)</h5>
+            </div>
 
-          </div>
+            <!-- Desktop Table (visible only on large screens) -->
+            <div class="table-responsive d-none d-lg-block">
+                <table class="table align-middle mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Business Name</th>
+                            <th>Mobile Number</th>
+                            <th>Category Name</th>
+                            <th class="text-end">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentEnquiries as $enquiry)
+                            <tr>
+                                <td>{{ $enquiry->created_at->format('d M Y, h:i A') }}</td>
+                                <td>{{ $enquiry->name }}</td>
+                                <td>{{ $enquiry->mobile }}</td>
+                                <td>{{ $enquiry->subject ?? '-' }}</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-primary rounded-pill px-4">View</button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4">No Enquiries Found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
-          <div class="table-responsive">
-            <table class="table align-middle mb-0">
-              <thead style="background:#f8fafc;">
-                <tr>
-                  <th>Date & Time</th>
-                  <th>Business Name</th>
-                  <th>Mobile Number</th>
-                  <th>Category Name</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse($recentEnquiries as $enquiry)
-                  <tr>
-                    <td>{{ $enquiry->created_at->format('d M Y, h:i A') }}</td>
-                    <td>{{ $enquiry->name }}</td>
-                    <td>{{ $enquiry->mobile }}</td>
-                    <td>{{ $enquiry->subject ?? '-' }}</td>
-                    <td>
-                      <button class="btn btn-sm btn-primary rounded-pill px-3">View</button>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No Enquiries Found</td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
-          </div>
+            <!-- Mobile + Tablet Card View -->
+            <div class="d-lg-none">
+                <div class="p-3">
+                    @forelse($recentEnquiries as $enquiry)
+                        <div class="card border shadow-sm mb-3 rounded-3 enquiry-card">
+                            <div class="card-body p-3">
+                                <div class="row g-2">
+                                    
+                                    <!-- Date & Time -->
+                                    <div class="col-12">
+                                        <small class="text-muted">Date & Time</small>
+                                        <p class="mb-1 fw-medium">
+                                            {{ $enquiry->created_at->format('d M Y, h:i A') }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Business Name -->
+                                    <div class="col-12">
+                                        <small class="text-muted">Business Name</small>
+                                        <p class="mb-1 fw-semibold text-dark">
+                                            {{ $enquiry->name }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Mobile Number -->
+                                    <div class="col-6">
+                                        <small class="text-muted">Mobile Number</small>
+                                        <p class="mb-0 fw-medium">{{ $enquiry->mobile }}</p>
+                                    </div>
+
+                                    <!-- Category Name -->
+                                    <div class="col-6">
+                                        <small class="text-muted">Category</small>
+                                        <p class="mb-0 fw-medium">{{ $enquiry->subject ?? '-' }}</p>
+                                    </div>
+
+                                    <!-- View Button -->
+                                    <div class="col-12 text-end mt-2">
+                                        <button class="btn btn-primary btn-sm rounded-pill px-4 py-2">
+                                            View Details
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-5 text-muted">
+                            No Enquiries Found
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
         </div>
-      </div>
     </div>
+</div>
 
 
     <!-- Mandal Members Request -->
-    <div class="row mt-4 mb-4">
-      <div class="col-12">
+   <!-- Mandal Members Request - Professional Responsive Design -->
+<div class="row mt-4 mb-4">
+    <div class="col-12">
         <div class="card border-0 shadow-sm rounded-4">
-          <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0 fw-bold text-dark">Mandal Members Request</h5>
+            
+            <!-- Header -->
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3 px-4">
+                <h5 class="mb-0 fw-bold text-dark">Mandal Members Request</h5>
+                @if($mandalRequests->count() > 0)
+                    <span class="badge bg-primary px-3 py-2 rounded-pill">
+                        {{ $mandalRequests->count() }} Pending
+                    </span>
+                @endif
+            </div>
 
-          </div>
+            <!-- Desktop Table View -->
+            <div class="table-responsive d-none d-lg-block">
+                <table class="table align-middle mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Member Name</th>
+                            <th>Mobile Number</th>
+                            <th>Mandal Name</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($mandalRequests as $member)
+                            <tr>
+                                <td class="fw-medium">
+                                    {{ $member->created_at->format('d M Y, h:i A') }}
+                                </td>
+                                <td>
+                                    <div class="fw-semibold">{{ $member->name }}</div>
+                                </td>
+                                <td class="fw-medium">{{ $member->mobile }}</td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {{ $member->mandal->name ?? 'Not Assigned' }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-success rounded-pill px-4 py-2">
+                                        <i class="fa fa-eye me-1"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    No Pending Requests Found
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
-          <div class="table-responsive">
-            <table class="table align-middle mb-0">
-              <thead style="background:#f8fafc;">
-                <tr>
-                  <th>Date & Time</th>
-                  <th>Member Name</th>
-                  <th>Mobile Number</th>
-                  <th>Mandal Name</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
+            <!-- Mobile + Tablet Card View -->
+            <div class="d-lg-none p-3">
                 @forelse($mandalRequests as $member)
-                  <tr>
-                    <td>{{ $member->created_at->format('d M Y, h:i A') }}</td>
-                    <td>{{ $member->name }}</td>
-                    <td>{{ $member->mobile }}</td>
-                    <td>{{ $member->mandal->name ?? '-' }}</td>
-                    <td>
-                      <button class="btn btn-sm btn-success rounded-pill px-3">View</button>
-                    </td>
-                  </tr>
+                    <div class="card border shadow-sm mb-3 rounded-3 mandal-card">
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                
+                                <!-- Date & Time -->
+                                <div class="col-12">
+                                    <small class="text-muted d-block mb-1">Date & Time</small>
+                                    <p class="mb-0 fw-medium">
+                                        {{ $member->created_at->format('d M Y, h:i A') }}
+                                    </p>
+                                </div>
+
+                                <!-- Member Name -->
+                                <div class="col-12">
+                                    <small class="text-muted d-block mb-1">Member Name</small>
+                                    <h6 class="mb-0 fw-bold text-dark">{{ $member->name }}</h6>
+                                </div>
+
+                                <!-- Mobile & Mandal in one row -->
+                                <div class="col-6">
+                                    <small class="text-muted d-block mb-1">Mobile Number</small>
+                                    <p class="mb-0 fw-medium">{{ $member->mobile }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted d-block mb-1">Mandal Name</small>
+                                    <p class="mb-0 fw-medium">
+                                        {{ $member->mandal->name ?? 'Not Assigned' }}
+                                    </p>
+                                </div>
+
+                                <!-- View Button -->
+                                <div class="col-12 text-end pt-2">
+                                    <button class="btn btn-success btn-sm rounded-pill px-5 py-2">
+                                        <i class="fa fa-eye me-2"></i> View Details
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 @empty
-                  <tr>
-                    <td colspan="5" class="text-center">No Requests Found</td>
-                  </tr>
+                    <div class="text-center py-5">
+                        <i class="fa fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">No Pending Requests Found</p>
+                    </div>
                 @endforelse
-              </tbody>
-            </table>
-          </div>
+            </div>
+
         </div>
-      </div>
     </div>
+</div>
 
     <!-- Table Ends -->
     @include('admin.footer')

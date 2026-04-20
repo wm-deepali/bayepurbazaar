@@ -10,6 +10,7 @@ use App\Models\Faq;
 use App\Models\Listing;
 use App\Models\Location;
 use App\Models\Mandal;
+use App\Models\MandalCategory;
 use App\Models\MandalMember;
 use App\Models\Page;
 use App\Models\Setting;
@@ -52,7 +53,7 @@ class FrontController extends Controller
         $homeSection = \App\Models\HomeSection::first();
         $hero = \App\Models\HomeHero::first();
 
-        return view('front-pages.home', compact('listings', 'faqs', 'categories', 'popularCategories', 'locations', 'homeSection','hero'));
+        return view('front-pages.home', compact('listings', 'faqs', 'categories', 'popularCategories', 'locations', 'homeSection', 'hero'));
     }
 
     public function searchListings(Request $request)
@@ -159,16 +160,27 @@ class FrontController extends Controller
 
     public function mandalMembers()
     {
-        $mandals = Mandal::where('status', 1)
-            ->withCount('members')
+        // ✅ Categories with mandals
+        $categories = MandalCategory::where('status', 1)
+            ->with([
+                'mandals' => function ($q) {
+                    $q->where('status', 1)->withCount('members');
+                }
+            ])
             ->get();
 
-        $members = MandalMember::with('mandal')
+        // ✅ Members with relations
+        $members = MandalMember::with([
+            'mandal',
+            'category',
+            'state',
+            'city'
+        ])
             ->where('status', 1)
             ->get();
 
         return view('front-pages.mandal-members', compact(
-            'mandals',
+            'categories',
             'members'
         ));
     }

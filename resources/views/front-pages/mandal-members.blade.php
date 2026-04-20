@@ -108,7 +108,7 @@
                                     <th class="px-5 py-4 font-semibold">मंडल</th>
                                     <th class="px-5 py-4 font-semibold hidden md:table-cell">स्थान</th>
                                     <th class="px-5 py-4 font-semibold hidden lg:table-cell">सदस्यता से</th>
-                                    <th class="px-5 py-4 font-semibold text-center">संपर्क</th>
+                                    <!-- <th class="px-5 py-4 font-semibold text-center">संपर्क</th> -->
                                 </tr>
                             </thead>
                             <tbody id="membersTableBody">
@@ -140,112 +140,179 @@
             });
         @endphp
 
-        <script>
-            const mandals = @json($mandals->pluck('name'));
-            const membersData = @json($membersData);
+       <script>
 
-            let currentMandal = "all";
-            let filteredData = [...membersData];
+// ✅ DATA FROM BACKEND
+const categories = @json($categories->map(function($cat){
+    return [
+        'name' => $cat->name,
+        'mandals' => $cat->mandals->map(function($m){
+            return [
+                'name' => $m->name,
+                'count' => $m->members_count
+            ];
+        })
+    ];
+}));
 
-            function getMandals() {
-                return [...new Set(membersData.map(m => m.mandal))];
-            }
+const membersData = @json($membersData);
 
-            function renderMandals() {
-                const container = document.getElementById("mandal-list");
-                container.innerHTML = "";
+// ✅ STATE
+let currentCategory = null;
+let currentMandal = "all";
+let filteredData = [...membersData];
 
-                getMandals().forEach(mandal => {
-                    const count = membersData.filter(m => m.mandal === mandal).length;
-                    const div = document.createElement("div");
-                    div.className = `px-5 py-3 rounded-xl cursor-pointer transition ${mandal === currentMandal ? 'bg-teal-600 text-white' : 'hover:bg-teal-50'}`;
-                    div.innerHTML = `
-                                <div class="flex justify-between items-center">
-                                    <span>${mandal}</span>
-                                    <span class="text-xs bg-white/30 px-2.5 py-1 rounded-full">${count}</span>
-                                </div>
-                            `;
-                    div.onclick = () => {
-                        currentMandal = mandal;
-                        renderMandals();
-                        filterAndRender();
-                    };
-                    container.appendChild(div);
-                });
-            }
 
-            function renderTable(data) {
-                const tbody = document.getElementById("membersTableBody");
-                tbody.innerHTML = "";
+// ✅ SIDEBAR (CATEGORY → MANDAL)
+function renderSidebar() {
+    const container = document.getElementById("mandal-list");
+    container.innerHTML = "";
 
-                if (data.length === 0) {
-                    document.getElementById("emptyState").classList.remove("hidden");
-                    document.getElementById("current-title").textContent = "कोई सदस्य नहीं मिला";
-                    return;
-                }
+    categories.forEach(cat => {
 
-                document.getElementById("emptyState").classList.add("hidden");
-                document.getElementById("current-title").textContent = currentMandal === "all" ? "सभी सदस्य" : currentMandal;
+        const wrapper = document.createElement("div");
+        wrapper.className = "mb-4";
 
-                data.forEach(member => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                                <td class="photo px-4 py-3">
-                                    <img src="${member.photo}" alt="${member.name}" class="member-photo">
-                                </td>
-                                <td class="px-5 py-4 font-medium">${member.name}</td>
-                                <td class="px-5 py-4 text-teal-700">${member.designation}</td>
-                                <td class="px-5 py-4">${member.mandal}</td>
-                                <td class="px-5 py-4 hidden md:table-cell text-gray-600">${member.location}</td>
-                                <td class="px-5 py-4 hidden lg:table-cell text-gray-500">${member.since}</td>
-                                <td class="px-5 py-4 text-center">
-                                    <div class="flex justify-center gap-4">
-                                        <a href="tel:${member.phone}" class="text-teal-600 hover:text-teal-800 text-lg" title="कॉल करें">
-                                            <i class="fa-solid fa-phone"></i>
-                                        </a>
-                                        <a href="https://wa.me/91${member.whatsapp}" target="_blank" class="text-green-600 hover:text-green-800 text-xl" title="व्हाट्सएप">
-                                            <i class="fa-brands fa-whatsapp"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            `;
-                    tbody.appendChild(row);
-                });
-            }
+        // category title
+        const title = document.createElement("div");
+        title.className = "font-bold text-teal-700 mb-2";
+        title.textContent = cat.name;
 
-            function filterAndRender() {
-                let data = membersData;
+        wrapper.appendChild(title);
 
-                if (currentMandal !== "all") {
-                    data = data.filter(m => m.mandal === currentMandal);
-                }
+        // mandals
+        cat.mandals.forEach(mandal => {
 
-                const search = document.getElementById("searchInput").value.toLowerCase().trim();
+            const div = document.createElement("div");
 
-                if (search) {
-                    data = data.filter(m =>
-                        (m.name || '').toLowerCase().includes(search) ||
-                        (m.designation || '').toLowerCase().includes(search) ||
-                        (m.mandal || '').toLowerCase().includes(search) ||
-                        (m.location || '').toLowerCase().includes(search)
-                    );
-                }
+            div.className = `
+                px-4 py-2 ml-2 rounded-lg cursor-pointer text-sm flex justify-between items-center
+                ${mandal.name === currentMandal ? 'bg-teal-600 text-white' : 'hover:bg-teal-50'}
+            `;
 
-                filteredData = data;
-                renderTable(data);
-            }
-            function showAllMandals() {
-                currentMandal = "all";
-                renderMandals();
+            div.innerHTML = `
+                <span>${mandal.name}</span>
+                <span class="text-xs bg-white/30 px-2 py-1 rounded">${mandal.count}</span>
+            `;
+
+            div.onclick = () => {
+                currentCategory = cat.name;
+                currentMandal = mandal.name;
+
+                renderSidebar();
                 filterAndRender();
-            }
-
-            // Initialize
-            window.onload = () => {
-                renderMandals();
-                filterAndRender();
-
-                document.getElementById("searchInput").addEventListener("input", filterAndRender);
             };
-        </script>
+
+            wrapper.appendChild(div);
+        });
+
+        container.appendChild(wrapper);
+    });
+}
+
+
+// ✅ TABLE RENDER
+function renderTable(data) {
+    const tbody = document.getElementById("membersTableBody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+        document.getElementById("emptyState").classList.remove("hidden");
+        document.getElementById("current-title").textContent = "कोई सदस्य नहीं मिला";
+        return;
+    }
+
+    document.getElementById("emptyState").classList.add("hidden");
+
+    document.getElementById("current-title").textContent =
+        currentMandal === "all" ? "सभी सदस्य" : currentMandal;
+
+    data.forEach(member => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td class="photo px-4 py-3">
+                <img src="${member.photo}" class="member-photo">
+            </td>
+
+            <td class="px-5 py-4 font-medium">
+                ${member.name}
+            </td>
+
+            <td class="px-5 py-4 text-teal-700">
+                ${member.designation ?? '-'}
+            </td>
+
+            <td class="px-5 py-4">
+                ${member.mandal ?? '-'}
+            </td>
+
+            <td class="px-5 py-4 hidden md:table-cell text-gray-600">
+                ${member.location ?? '-'}
+            </td>
+
+            <td class="px-5 py-4 hidden lg:table-cell text-gray-500">
+                ${member.since ?? '-'}
+            </td>
+
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+
+// ✅ FILTER LOGIC
+function filterAndRender() {
+
+    let data = membersData;
+
+    // filter by category
+    if (currentCategory) {
+        data = data.filter(m => m.category === currentCategory);
+    }
+
+    // filter by mandal
+    if (currentMandal !== "all") {
+        data = data.filter(m => m.mandal === currentMandal);
+    }
+
+    // search
+    const search = document.getElementById("searchInput").value.toLowerCase().trim();
+
+    if (search) {
+        data = data.filter(m =>
+            (m.name || '').toLowerCase().includes(search) ||
+            (m.designation || '').toLowerCase().includes(search) ||
+            (m.mandal || '').toLowerCase().includes(search) ||
+            (m.category || '').toLowerCase().includes(search) ||
+            (m.location || '').toLowerCase().includes(search)
+        );
+    }
+
+    filteredData = data;
+    renderTable(data);
+}
+
+
+// ✅ RESET
+function showAllMandals() {
+    currentCategory = null;
+    currentMandal = "all";
+    renderSidebar();
+    filterAndRender();
+}
+
+
+// ✅ INIT
+window.onload = () => {
+    renderSidebar();
+    filterAndRender();
+
+    document.getElementById("searchInput")
+        .addEventListener("input", filterAndRender);
+};
+
+</script>
 @endsection

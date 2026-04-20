@@ -41,7 +41,7 @@
 
         <!-- Master -->
         <li
-            class="{{ request()->routeIs('admin.locations.*', 'admin.categories.*', 'admin.subcategories.*', 'admin.mandals.*') ? 'active' : '' }}">
+            class="{{ request()->routeIs('admin.locations.*', 'admin.categories.*', 'admin.subcategories.*', 'admin.mandals.*', 'admin.mandal-categories.*') ? 'active' : '' }}">
             <a href="#">
                 <i class="fa-solid fa-database"></i> Master
             </a>
@@ -66,6 +66,13 @@
                     </a>
                 </li>
 
+                {{-- ✅ NEW --}}
+                <li class="{{ request()->routeIs('admin.mandal-categories.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.mandal-categories.index') }}">
+                        Manage Mandal Categories
+                    </a>
+                </li>
+
                 <li class="{{ request()->routeIs('admin.mandals.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.mandals.index') }}">
                         Manage Mandals
@@ -73,6 +80,7 @@
                 </li>
 
             </ul>
+
         </li>
 
 

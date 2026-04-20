@@ -9,8 +9,14 @@ class Mandal extends Model
     protected $fillable = [
         'name',
         'slug',
-        'status'
+        'status',
+        'mandal_category_id' // ADD THIS
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(MandalCategory::class, 'mandal_category_id');
+    }
 
     public function members()
     {

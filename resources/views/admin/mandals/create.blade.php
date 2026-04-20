@@ -55,7 +55,29 @@
                         @csrf
 
 
+                        {{-- ✅ NEW: CATEGORY DROPDOWN --}}
                         <div class="form-group">
+
+                            <label>
+                                Mandal Category <span class="text-danger">*</span>
+                            </label>
+
+                            <select name="mandal_category_id" class="form-control" required>
+
+                                <option value="">Select Category</option>
+
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">
+                                        {{ $cat->name }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group mt-3">
 
                             <label>
                                 Mandal Name <span class="text-danger">*</span>
@@ -102,9 +124,7 @@
 
 
                             <a href="{{ route('admin.mandals.index') }}" class="btn btn-secondary">
-
                                 Cancel
-
                             </a>
 
                         </div>

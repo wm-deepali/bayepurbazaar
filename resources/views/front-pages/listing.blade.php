@@ -29,6 +29,19 @@
                 transform: translateY(-4px);
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             }
+            #filterDrawer {
+    box-shadow: 4px 0 25px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 768px) {
+    .listpage-filter{
+    display:none;
+}
+}
+
+
+
+
         </style>
     </head>
 
@@ -41,7 +54,7 @@
             <div class="flex flex-col lg:flex-row gap-8">
 
                 <!-- LEFT SIDEBAR - CATEGORIES -->
-                <aside class="lg:w-80 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-fit lg:sticky lg:top-20">
+                <aside class="lg:w-80 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-fit lg:sticky lg:top-20 listpage-filter">
                     <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
                         <i class="fa-solid fa-list text-teal-600"></i>
                         सभी श्रेणियाँ
@@ -143,6 +156,139 @@
 
                     </div>
                 </aside>
+                
+<!-- Mobile Filter Button -->
+<button onclick="openFilterDrawer()"
+    class="lg:hidden flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg">
+    
+    <i class="fa-solid fa-sliders"></i>
+    फ़िल्टर
+
+</button>
+
+<!-- Overlay -->
+<div id="filterOverlay"
+     onclick="closeFilterDrawer()"
+     class="fixed inset-0 bg-black/40 z-40 hidden"></div>
+
+<!-- Drawer -->
+<div id="filterDrawer"
+     class="fixed top-0 left-0 h-full  bg-white z-50 transform -translate-x-full transition-all duration-300 overflow-y-auto" style="width:100%;">
+
+    <div class="p-4 border-b flex justify-between items-center">
+        <h2 class="text-lg font-bold">फ़िल्टर</h2>
+        <button onclick="closeFilterDrawer()">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 👇 YAHI PAR ASIDE KA SAME CODE COPY KARO -->
+    <div class="p-4">
+
+          <aside class="lg:w-80 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 h-fit lg:sticky lg:top-20">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-list text-teal-600"></i>
+                        सभी श्रेणियाँ
+                    </h2>
+
+                    <ul class="space-y-2">
+
+                        <li>
+                            <a href="{{ route('listing') }}"
+                                class="block px-4 py-3 rounded-xl bg-teal-50 text-teal-700 font-medium">
+                                सभी श्रेणियाँ
+                            </a>
+                        </li>
+
+                        @foreach($categories as $category)
+
+                                            <li>
+                                                <a href="{{ route('listing', array_merge(request()->query(), [
+                                'category' => $category->slug,
+                                'subcategory' => null
+                            ])) }}" class="block px-4 py-3 rounded-xl flex justify-between items-center transition
+                                                                            {{ request('category') == $category->slug
+                                ? 'bg-teal-600 text-white'
+                                : 'hover:bg-gray-50'
+                                                                            }}">
+
+                                                    <span>{{ $category->name }}</span>
+
+                                                    <span class="text-xs px-2 py-1 rounded-full
+                                                                            {{ request('category') == $category->slug
+                                ? 'bg-white text-teal-600'
+                                : 'bg-gray-200 text-gray-700'
+                                                                            }}">
+                                                        {{ $category->listings_count }}
+                                                    </span>
+
+                                                </a>
+                                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                    <div class="mt-8 pt-6 border-t">
+                        <h3 class="font-semibold mb-4">फिल्टर</h3>
+
+                        <form method="GET" action="{{ route('listing') }}" class="space-y-4">
+
+                            <input type="hidden" name="category" value="{{ request('category') }}">
+                            <input type="hidden" name="subcategory" value="{{ request('subcategory') }}">
+                            <input type="hidden" name="sort" value="{{ request('sort') }}">
+
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">स्थान</label>
+
+                                <select name="location" class="w-full border rounded-lg px-4 py-2">
+
+                                    <option value="">सभी स्थान</option>
+
+                                    @foreach($locations as $location)
+
+                                        <option value="{{ $location->id }}" {{ request('location') == $location->id ? 'selected' : '' }}>{{ $location->location }}
+
+                                        </option>
+
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+                            <div>
+
+                                <label class="block text-sm font-medium mb-2">सत्यापित</label>
+
+                                <label class="flex items-center gap-2">
+
+                                    <input type="checkbox" name="verified" value="1" {{ request('verified') ? 'checked' : '' }} class="rounded text-teal-600">
+
+                                    <span>केवल सत्यापित दिखाएँ</span>
+
+                                </label>
+
+                            </div>
+
+                            <div>
+
+                                <button type="submit"
+                                    class="w-full bg-teal-600 text-white py-3 rounded-xl mt-4 hover:bg-teal-700">
+
+                                    फ़िल्टर लागू करें
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </aside>
+    </div>
+</div>
 
                 <!-- RIGHT SIDE - LISTINGS -->
                 <div class="flex-1">
@@ -242,29 +388,25 @@
 
                                             <div class="p-6 flex-1 flex flex-col">
 
-                                                <div class="flex justify-between items-start">
+<div class="flex flex-col-reverse lg:flex-row justify-between items-start gap-2">
 
-                                                    <div>
-                                                        <h3 class="text-xl font-bold">
-                                                            {{ $listing->business_name }}
-                                                        </h3>
+    <div>
+        <h3 class="text-xl font-bold">
+            {{ $listing->business_name }}
+        </h3>
 
-                                                        <p class="text-sm text-gray-500 mt-1">
+        <p class="text-sm text-gray-500 mt-1">
+            {{ $listing->category->name ?? '' }}
+            • {{ $listing->address }}
+        </p>
+    </div>
 
-                                                            {{ $listing->category->name ?? '' }}
+    <span class="bg-teal-100 text-teal-700 px-4 py-1 rounded-full text-sm font-medium self-start lg:self-auto">
+        {{ $listing->category->name ?? '' }}
+    </span>
 
-                                                            • {{ $listing->address }}
+</div>
 
-                                                        </p>
-                                                    </div>
-
-                                                    <span class="bg-teal-100 text-teal-700 px-4 py-1 rounded-full text-sm font-medium">
-
-                                                        {{ $listing->category->name ?? '' }}
-
-                                                    </span>
-
-                                                </div>
 
                                                 <p class="mt-4 text-gray-600 line-clamp-3 flex-1">
 
@@ -373,5 +515,17 @@
                 </div>
             </div>
         </main>
+        <script>
+            function openFilterDrawer() {
+    document.getElementById("filterDrawer").classList.remove("-translate-x-full");
+    document.getElementById("filterOverlay").classList.remove("hidden");
+}
+
+function closeFilterDrawer() {
+    document.getElementById("filterDrawer").classList.add("-translate-x-full");
+    document.getElementById("filterOverlay").classList.add("hidden");
+}
+
+        </script>
 
 @endsection

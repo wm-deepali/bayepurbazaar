@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\HomeIntroController;
 use App\Http\Controllers\Admin\ListingController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LogoutController;
+use App\Http\Controllers\Admin\MandalCategoryController;
 use App\Http\Controllers\Admin\MandalController;
 use App\Http\Controllers\Admin\MandalMemberController;
 use App\Http\Controllers\Admin\PageController;
@@ -76,11 +77,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('subcategories', SubCategoryController::class)->names('subcategories');
 
+        Route::resource('mandal-categories', MandalCategoryController::class);
+
         Route::resource('mandals', MandalController::class)->names('mandals');
 
         Route::resource('listings', ListingController::class);
         Route::get('get-subcategories/{category_id}', [ListingController::class, 'getSubCategories'])->name('get.subcategories');
 
+        Route::get('mandal-members/get-mandals/{id}', [MandalMemberController::class, 'getMandals']);
+        Route::get('mandal-members/get-cities/{id}', [MandalMemberController::class, 'getCities']);
+        Route::post('mandal-members/import', [MandalMemberController::class, 'import'])->name('mandal-members.import');
+        Route::get('mandal-members/sample', [MandalMemberController::class, 'sample'])->name('mandal-members.sample');
         Route::resource('mandal-members', MandalMemberController::class)->names('mandal-members');
 
         Route::resource('faqs', FaqController::class)->names('faqs');

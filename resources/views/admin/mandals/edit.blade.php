@@ -39,6 +39,17 @@ Edit Mandal
 
 <div class="card-body">
 
+@if ($errors->any())
+<div class="alert alert-danger">
+<ul class="mb-0">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
+</div>
+@endif
+
+
 <form id="mandalForm"
 method="POST"
 action="{{ route('admin.mandals.update',$mandal->id) }}">
@@ -47,7 +58,30 @@ action="{{ route('admin.mandals.update',$mandal->id) }}">
 @method('PUT')
 
 
+{{-- ✅ CATEGORY DROPDOWN --}}
 <div class="form-group">
+
+<label>
+Mandal Category <span class="text-danger">*</span>
+</label>
+
+<select name="mandal_category_id" class="form-control" required>
+
+<option value="">Select Category</option>
+
+@foreach($categories as $cat)
+<option value="{{ $cat->id }}"
+{{ $mandal->mandal_category_id == $cat->id ? 'selected' : '' }}>
+{{ $cat->name }}
+</option>
+@endforeach
+
+</select>
+
+</div>
+
+
+<div class="form-group mt-3">
 
 <label>Mandal Name</label>
 
